@@ -1,4 +1,4 @@
-# rhythm
+# Rhythm
 Data Structures and Algorithms implemented in Reason
 
 # Contributing
