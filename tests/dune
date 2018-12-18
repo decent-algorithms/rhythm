@@ -3,6 +3,7 @@
   ; IMPORTANT: -linkall flag is required to include all tests.
   (ocamlopt_flags -linkall -g)
   (libraries
+    rely.lib
     rhythm.lib
   )
 )
