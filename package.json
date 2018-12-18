@@ -11,7 +11,9 @@
     ]
   },
   "scripts": {
-    "test": "./scripts/test"
+    "test": "./scripts/test",
+    "watch": "./scripts/watch",
+    "watch-build-only": "./scripts/watch-build-only"
   },
   "dependencies": {
     "@opam/dune": "*",
