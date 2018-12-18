@@ -3,13 +3,13 @@ Data Structures and Algorithms implemented in Reason
 
 # Contributing
 
-First install `esy`
+First install `esy` (once)
 
 ```
 npm install -g esy
 ```
 
-Install (once and when package.json changes)
+Install (once, and when package.json changes)
 
 ```
 esy install
