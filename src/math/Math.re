@@ -1,6 +1,4 @@
-exception Imaginary;
 
-exception Undefined;
 
 /**
  * Computes the floor of the log base 2 of an integer. This is very quick using
@@ -10,10 +8,10 @@ exception Undefined;
  */
 let log2 = (u: int): int => {
   if (u < 0) {
-    raise(Imaginary);
+    raise(Exceptions.Imaginary("log2"));
   };
   if (u === 0) {
-    raise(Undefined);
+    raise(Exceptions.Undefined("log2"));
   };
   let u = u lor u lsr 1;
   let u = u lor u lsr 2;

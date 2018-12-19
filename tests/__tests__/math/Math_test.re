@@ -1,8 +1,9 @@
 open TestFramework;
+
 open Rhythm;
 
 describe("Math", ({test}) => {
-  test("log2 good", ({expect}) => {
+  test("log2", ({expect}) => {
     /* Tests values 2^k and (2^k)-1 for k in [1, 32] */
     expect.int(Math.log2(1)).toBe(0);
     expect.int(Math.log2(2)).toBe(1);
@@ -71,7 +72,11 @@ describe("Math", ({test}) => {
   });
 
   test("log2 exceptions", ({expect}) => {
-    expect.fn(() => Math.log2(-1)).toThrowException(Math.Imaginary);
-    expect.fn(() => Math.log2(0)).toThrowException(Math.Undefined);
+    expect.fn(() => Math.log2(-1)).toThrowException(
+      Exceptions.Imaginary("log2"),
+    );
+    expect.fn(() => Math.log2(0)).toThrowException(
+      Exceptions.Undefined("log2"),
+    );
   });
 });
