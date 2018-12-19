@@ -43,6 +43,8 @@ describe("MutableArray", ({test}) => {
     let () = arr[2][1] = 100;
     let one = arr[2][1];
     expect.int(one).toBe(100);
+    /* When the index is too big an exception is thrown. */
+    expect.fn(() => arr[1000]).toThrow();
     /*
      * Because it may be recommended to open modules to enable syntax we
      * provide a module to reset syntax that was opened.
