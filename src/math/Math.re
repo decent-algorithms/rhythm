@@ -8,7 +8,7 @@ exception Undefined;
  *
  * http://aggregate.org/MAGIC/#Log2%20of%20an%20Integer
  */
-let log2 = (u: int) : int => {
+let log2 = (u: int): int => {
   if (u < 0) {
     raise(Imaginary);
   };
