@@ -1,78 +1,11 @@
 type t('el) = array('el);
 
-module Syntax = {
-  module Array = {
-    let get = (arr, i) => {
-      let n = Caml.Array.length(arr);
-      if (i < 0 || i >= n) {
-        None;
-      } else {
-        Some(Caml.Array.get(arr, i));
-      };
-    };
-
-    let set = (arr, i, value) => {
-      let n = Caml.Array.length(arr);
-      if (i < 0 || i >= n) {
-        Error(
-          Exceptions.IndexOutOfBounds("MutableArray.Syntax.set", i, 0, n),
-        );
-      } else {
-        Caml.Array.set(arr, i, value);
-        Ok();
-      };
-    };
-  };
-};
-
-module SyntaxNested = {
-  module Array = {
-    let get = (optArr, i) =>
-      switch (optArr) {
-      | Some(arr) =>
-        let n = Caml.Array.length(arr);
-        if (i < 0 || i >= n) {
-          None;
-        } else {
-          Some(Caml.Array.get(arr, i));
-        };
-      | None => None
-      };
-
-    let set = (optArr, i, value) =>
-      switch (optArr) {
-      | Some(arr) =>
-        let n = Caml.Array.length(arr);
-        if (i < 0 || i >= n) {
-          Error(
-            Exceptions.IndexOutOfBounds(
-              "MutableArray.NestedSyntax.set",
-              i,
-              0,
-              n,
-            ),
-          );
-        } else {
-          Caml.Array.set(arr, i, value);
-          Ok();
-        };
-      | None =>
-        Error(Exceptions.UnexpectedNone("MutableArray.NestedSyntax.set"))
-      };
-  };
-};
-
-module SyntaxExn = {
-  module Array = {
-    let get = Caml.Array.get;
-    let set = Caml.Array.set;
-  };
-};
-
-module SyntaxReset = {
-  module Array = {};
-};
-open SyntaxReset;
+include FeatureMutableSyntax.Add({
+  type nonrec t('el) = t('el);
+  let length = Caml.Array.length;
+  let get = Caml.Array.get;
+  let set = Caml.Array.set;
+});
 
 let make = () => [||];
 let init = Caml.Array.init;

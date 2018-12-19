@@ -1,27 +1,6 @@
 type t('el) = array('el);
 
-module Syntax: {
-  module Array: {
-    let get: (t('el), int) => option('el);
-    let set: (t('el), int, 'el) => result(unit, exn);
-  };
-};
-
-module SyntaxNested: {
-  module Array: {
-    let get: (option(t('el)), int) => option('el);
-    let set: (option(t('el)), int, 'el) => result(unit, exn);
-  };
-};
-
-module SyntaxExn: {
-  module Array: {
-    let get: (t('el), int) => 'el;
-    let set: (t('el), int, 'el) => unit;
-  };
-};
-
-module SyntaxReset: {module Array: {};};
+include FeatureMutableSyntax.Interface with type t_interface('el) = t('el);
 
 /**
  * Creation functions.
