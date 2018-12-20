@@ -1,6 +1,8 @@
 type t('el) = list('el);
 
-include FeatureSyntax.Interface with type t_interface('el) = t('el);
+include FeatureSyntax.Interface with type tSyntax('el) = t('el);
+
+include FeatureSequence.Interface with type tSequence('el) = t('el);
 
 /**
  * Creation functions.
@@ -53,35 +55,6 @@ let getLastExn: t('el) => 'el;
 /* let swapExn: (int, int, t('el)) => unit; */
 /* let updateIndex: (int, 'el => 'el, t('el)) => result(unit, exn); */
 /* let updateIndexExn: (int, 'el => 'el, t('el)) => unit; */
-
-/**
- * Iteration functions.
- */;
-
-/* let every: ('el => bool, t('el)) => bool; */
-/* let everyi: ((int, 'el) => bool, t('el)) => bool; */
-/* let forEach: ('el => unit, t('el)) => unit; */
-/* let forEachi: ((int, 'el) => unit, t('el)) => unit; */
-/* let none: ('el => bool, t('el)) => bool; */
-/* let nonei: ((int, 'el) => bool, t('el)) => bool; */
-/* let some: ('el => bool, t('el)) => bool; */
-/* let somei: ((int, 'el) => bool, t('el)) => bool; */
-
-/**
- * Sequence functions.
- */;
-
-/* let filterDrop: ('el => bool, t('el)) => t('el); */
-/* let filterDropi: ((int, 'el) => bool, t('el)) => t('el); */
-/* let filterKeep: ('el => bool, t('el)) => t('el); */
-/* let filterKeepi: ((int, 'el) => bool, t('el)) => t('el); */
-/* let map: ('a => 'b, t('a)) => t('b); */
-/* let mapi: ((int, 'a) => 'b, t('a)) => t('b); */
-/* let reverse: t('el) => t('el); */
-/* let reduce: (('acc, 'el) => 'acc, 'acc, t('el)) => 'acc; */
-/* let reducei: (('acc, int, 'el) => 'acc, 'acc, t('el)) => 'acc; */
-/* let reduceReverse: (('acc, 'el) => 'acc, 'acc, t('el)) => 'acc; */
-/* let reduceReversei: (('acc, int, 'el) => 'acc, 'acc, t('el)) => 'acc; */
 
 /**
  * Multi-sequence functions.

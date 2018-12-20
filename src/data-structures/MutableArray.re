@@ -1,14 +1,13 @@
-type t('el) = array('el);
+include MutableArrayCore;
 
 include FeatureMutableSyntax.Add({
-  type nonrec t('el) = t('el);
+  include MutableArrayCore;
   let length = Caml.Array.length;
   let get = Caml.Array.get;
   let set = Caml.Array.set;
 });
 
-let make = () => [||];
-let init = Caml.Array.init;
+include FeatureSequence.Add(MutableArrayCore);
 
 let length = Caml.Array.length;
 let isEmpty = arr => length(arr) === 0;
@@ -169,108 +168,6 @@ let updateIndex = (i, fn, arr) =>
   try (Ok(updateIndexExn(i, fn, arr))) {
   | e => Error(e)
   };
-
-let everyi = (fn, arr) => {
-  open SyntaxExn;
-  let result = ref(true);
-  let n = length(arr);
-  let i = ref(0);
-  while (result^ && i^ < n) {
-    if (!fn(i^, arr[i^])) {
-      result := false;
-    };
-    incr(i);
-  };
-  result^;
-};
-
-let every = (fn, arr) => everyi((i, el) => fn(el), arr);
-
-let somei = (fn, arr) => {
-  open SyntaxExn;
-  let result = ref(false);
-  let n = length(arr);
-  let i = ref(0);
-  while (! result^ && i^ < n) {
-    if (fn(i^, arr[i^])) {
-      result := true;
-    };
-    incr(i);
-  };
-  result^;
-};
-
-let some = (fn, arr) => somei((i, el) => fn(el), arr);
-
-let nonei = (fn, arr) => everyi((i, el) => !fn(i, el), arr);
-
-let none = (fn, arr) => nonei((i, el) => fn(el), arr);
-
-let forEachi = (fn, arr) => {
-  open SyntaxExn;
-  let n = length(arr);
-  for (i in 0 to n - 1) {
-    let () = fn(i, arr[i]);
-    ();
-  };
-};
-
-let forEach = (fn, arr) => forEachi((i, el) => fn(el), arr);
-
-let reducei = (fn, initialValue, arr) => {
-  open SyntaxExn;
-  let result = ref(initialValue);
-  let n = length(arr);
-  for (i in 0 to n - 1) {
-    result := fn(result^, i, arr[i]);
-  };
-  result^;
-};
-
-let reduce = (fn, initialValue, arr) =>
-  reducei((acc, i, el) => fn(acc, el), initialValue, arr);
-
-let reduceReversei = (fn, initialValue, arr) => {
-  open SyntaxExn;
-  let result = ref(initialValue);
-  let n = length(arr);
-  for (i in 0 to n - 1) {
-    result := fn(result^, n - 1 - i, arr[n - 1 - i]);
-  };
-  result^;
-};
-
-let reduceReverse = (fn, initialValue, arr) =>
-  reduceReversei((acc, i, el) => fn(acc, el), initialValue, arr);
-
-let filterKeepi = (fn, arr) => {
-  open SyntaxExn;
-  let resultRev = ref([]);
-  let n = length(arr);
-  for (i in 0 to n - 1) {
-    let el = arr[i];
-    if (fn(i, el)) {
-      resultRev := [el, ...resultRev^];
-    };
-  };
-  resultRev^ |> Caml.List.rev |> Caml.Array.of_list;
-};
-
-let filterKeep = (fn, arr) => filterKeepi((i, el) => fn(el), arr);
-
-let filterDropi = (fn, arr) => filterKeepi((i, el) => !fn(i, el), arr);
-
-let filterDrop = (fn, arr) => filterDropi((i, el) => fn(el), arr);
-
-let reverse = arr => {
-  open SyntaxExn;
-  let n = length(arr);
-  init(n, i => arr[n - 1 - i]);
-};
-
-let mapi = Caml.Array.mapi;
-
-let map = Caml.Array.map;
 
 let flatten = arrOfArr => {
   open SyntaxExn;

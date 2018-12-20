@@ -6,26 +6,26 @@ module type Config = {
 };
 
 module type Interface = {
-  type t_interface('el);
+  type tMutableSyntax('el);
 
   module Syntax: {
     module Array: {
-      let get: (t_interface('el), int) => option('el);
-      let set: (t_interface('el), int, 'el) => result(unit, exn);
+      let get: (tMutableSyntax('el), int) => option('el);
+      let set: (tMutableSyntax('el), int, 'el) => result(unit, exn);
     };
   };
 
   module SyntaxNested: {
     module Array: {
-      let get: (option(t_interface('el)), int) => option('el);
-      let set: (option(t_interface('el)), int, 'el) => result(unit, exn);
+      let get: (option(tMutableSyntax('el)), int) => option('el);
+      let set: (option(tMutableSyntax('el)), int, 'el) => result(unit, exn);
     };
   };
 
   module SyntaxExn: {
     module Array: {
-      let get: (t_interface('el), int) => 'el;
-      let set: (t_interface('el), int, 'el) => unit;
+      let get: (tMutableSyntax('el), int) => 'el;
+      let set: (tMutableSyntax('el), int, 'el) => unit;
     };
   };
 
@@ -34,8 +34,8 @@ module type Interface = {
 
 module Add =
        (Config: Config)
-       : (Interface with type t_interface('el) = Config.t('el)) => {
-  type t_interface('el) = Config.t('el);
+       : (Interface with type tMutableSyntax('el) = Config.t('el)) => {
+  type tMutableSyntax('el) = Config.t('el);
   module Syntax = {
     module Array = {
       let get = (ds, i) => {

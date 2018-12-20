@@ -5,27 +5,25 @@ module type Config = {
 };
 
 module type Interface = {
-  type t_interface('el);
+  type tSyntax('el);
 
   module Syntax: {
-    module Array: {let get: (t_interface('el), int) => option('el);};
+    module Array: {let get: (tSyntax('el), int) => option('el);};
   };
 
   module SyntaxNested: {
-    module Array: {let get: (option(t_interface('el)), int) => option('el);
-    };
+    module Array: {let get: (option(tSyntax('el)), int) => option('el);};
   };
 
-  module SyntaxExn: {module Array: {let get: (t_interface('el), int) => 'el;};
-  };
+  module SyntaxExn: {module Array: {let get: (tSyntax('el), int) => 'el;};};
 
   module SyntaxReset: {module Array: {};};
 };
 
 module Add =
        (Config: Config)
-       : (Interface with type t_interface('el) = Config.t('el)) => {
-  type t_interface('el) = Config.t('el);
+       : (Interface with type tSyntax('el) = Config.t('el)) => {
+  type tSyntax('el) = Config.t('el);
   module Syntax = {
     module Array = {
       let get = (ds, i) => {

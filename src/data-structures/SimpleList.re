@@ -1,41 +1,12 @@
-type t('el) = list('el);
-
-let rec set = (list, n, el) =>
-  if (n === 0) {
-    switch (list) {
-    | [] => raise(Exceptions.Empty("SimpleList.set"))
-    | [curr, ...rest] => [el, ...rest]
-    };
-  } else if (n > 0) {
-    switch (list) {
-    | [] => raise(Exceptions.Empty("SimpleList.set"))
-    | [curr, ...rest] => [curr, ...set(rest, n - 1, el)]
-    };
-  } else {
-    raise(Exceptions.NegativeIndex("SimpleList.set", n));
-  };
+include SimpleListCore;
 
 include FeatureSyntax.Add({
-  type nonrec t('el) = t('el);
+  include SimpleListCore;
   let length = Caml.List.length;
   let get = Caml.List.nth;
-  let set = set;
 });
 
-let make = () => [];
-
-let init = (length, fn) => {
-  let arr = MutableArray.init(length, fn);
-  Caml.Array.to_list(arr);
-};
-
-let length = Caml.List.length;
-
-let isEmpty = list =>
-  switch (list) {
-  | [] => true
-  | _ => false
-  };
+include FeatureSequence.Add(SimpleListCore);
 
 let getFirst = list =>
   switch (list) {
