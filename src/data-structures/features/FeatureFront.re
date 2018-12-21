@@ -130,14 +130,7 @@ module Add =
 
   let removeFirstExn =
     switch (Config.fastRemoveFirst) {
-    | RemoveFirstExn(removeFirstExn) => (
-        ds =>
-          if (Config.isEmpty(ds)) {
-            raise(Exceptions.Empty("FeatureFront.removeFirstExn"));
-          } else {
-            removeFirstExn(ds);
-          }
-      )
+    | RemoveFirstExn(removeFirstExn) => removeFirstExn
     | _ => (
         ds => {
           let list = Config.toList(ds);

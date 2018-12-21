@@ -11,27 +11,14 @@ include FeatureSequence.Interface with type tSequence('el) = t('el);
 
 include FeatureFront.Interface with type tFront('el) = t('el);
 
+include FeatureBack.Interface with type tBack('el) = t('el);
+
 /**
  * Access functions.
  */
 
 let getIndex: (int, t('el)) => option('el);
 let getIndexExn: (int, t('el)) => 'el;
-let getLast: t('el) => option('el);
-let getLastExn: t('el) => 'el;
-
-/**
- * Add functions.
- */
-
-let addLast: ('el, t('el)) => t('el);
-
-/**
- * Remove functions.
- */
-
-let removeLast: t('el) => option(t('el));
-let removeLastExn: t('el) => t('el);
 
 /**
  * Update functions.

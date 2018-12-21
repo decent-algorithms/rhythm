@@ -16,45 +16,14 @@ include FeatureFront.Add({
   let fastRemoveFirst = RemoveFirstExn(SimpleListCore.removeFirstExn);
 });
 
+include FeatureBack.Add({
+  include SimpleListCore;
+  open FeatureBack;
+  let fastGetLast = SlowGetLast;
+  let fastAddLast = SlowAddLast;
+  let fastRemoveLast = SlowRemoveLast;
+});
+
 let getIndex = (i, arr) => Syntax.(arr[i]);
 
 let getIndexExn = (i, arr) => SyntaxExn.(arr[i]);
-
-let getLastExn = list => {
-  let list = ref(list);
-  let break = ref(false);
-  while (! break^) {
-    switch (list^) {
-    | [] => break := true
-    | [el] => break := true
-    | [_, ...rest] => list := rest
-    };
-  };
-
-  switch (list^) {
-  | [] => raise(Exceptions.Empty("SimpleList.getLastExn"))
-  | [el] => el
-  /* This should not be reachable. */
-  | _ => raise(Exceptions.InternalError("SimpleList.getLastExn"))
-  };
-};
-
-let getLast = list =>
-  try (Some(getLastExn(list))) {
-  | e => None
-  };
-
-/* let addFirst = (el, arr) => concat([|el|], arr); */
-/* let addLast = (el, arr) => concat(arr, [|el|]); */
-
-/* let getFirstNExn = (n, arr) => {
-     let len = length(arr);
-     if (n < 0 || n > len) {
-       raise(
-         Exceptions.IndexOutOfBounds("MutableArray.getFirstNExn", n, 0, len + 1),
-       );
-     } else {
-       init(n, i => SyntaxExn.(arr[i]));
-     };
-   }; */
-();
