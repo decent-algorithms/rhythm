@@ -15,6 +15,9 @@ module type Interface = {
   let toMutableArray: tSequence('el) => MutableArrayCore.t('el);
   let fromMutableArray: MutableArrayCore.t('el) => tSequence('el);
 
+  let toMutableArrayList: tSequence('el) => MutableArrayListCore.t('el);
+  let fromMutableArrayList: MutableArrayListCore.t('el) => tSequence('el);
+
   let every: ('el => bool, tSequence('el)) => bool;
   let everyi: ((int, 'el) => bool, tSequence('el)) => bool;
   let forEach: ('el => unit, tSequence('el)) => unit;
@@ -57,6 +60,11 @@ module Add =
   let toMutableArray = ds => ds |> Config.toList |> MutableArrayCore.fromList;
   let fromMutableArray = ds =>
     ds |> MutableArrayCore.toList |> Config.fromList;
+
+  let toMutableArrayList = ds =>
+    ds |> Config.toList |> MutableArrayListCore.fromList;
+  let fromMutableArrayList = ds =>
+    ds |> MutableArrayListCore.toList |> Config.fromList;
 
   let everyi = (fn, ds) => {
     let list = Config.toList(ds);
