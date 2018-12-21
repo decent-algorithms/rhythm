@@ -2,7 +2,6 @@ include SimpleListCore;
 
 include FeatureSyntax.Add({
   include SimpleListCore;
-  let length = Caml.List.length;
   let get = Caml.List.nth;
 });
 

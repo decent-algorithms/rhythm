@@ -2,7 +2,6 @@ include MutableArrayCore;
 
 include FeatureMutableSyntax.Add({
   include MutableArrayCore;
-  let length = Caml.Array.length;
   let get = Caml.Array.get;
   let set = Caml.Array.set;
 });
