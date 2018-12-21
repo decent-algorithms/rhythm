@@ -7,7 +7,9 @@ include FeatureMutableSyntax.Add({
   let set = Caml.Array.set;
 });
 
-include FeatureSequence.Add(MutableArrayCore);
+include FeatureSequence.Add({
+  include MutableArrayCore;
+});
 
 include FeatureFront.Add({
   include MutableArrayCore;
@@ -25,46 +27,13 @@ include FeatureBack.Add({
   let fastRemoveLast = SlowRemoveLast;
 });
 
-let getIndex = (i, arr) => Syntax.(arr[i]);
-let getIndexExn = (i, arr) => SyntaxExn.(arr[i]);
-let setIndex = (i, value, arr) => Syntax.(arr[i] = value);
-let setIndexExn = (i, value, arr) => SyntaxExn.(arr[i] = value);
+include FeatureIndexed.Add({
+  include MutableArrayCore;
+  let getIndexExn = (i, arr) => SyntaxExn.(arr[i]);
+});
 
-let swapExn = (i, j, arr) => {
-  let n = length(arr);
-  if (i < 0 || i >= n) {
-    raise(Exceptions.IndexOutOfBounds("MutableArray.swapExn", i, 0, n));
-  } else if (j < 0 || j >= n) {
-    raise(Exceptions.IndexOutOfBounds("MutableArray.swapExn", j, 0, n));
-  } else {
-    open SyntaxExn;
-    let tmp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = tmp;
-    ();
-  };
-};
-
-let swap = (i, j, arr) =>
-  try (Ok(swapExn(i, j, arr))) {
-  | e => Error(e)
-  };
-
-let updateIndexExn = (i, fn, arr) => {
-  let n = length(arr);
-  if (i < 0 || i >= n) {
-    raise(
-      Exceptions.IndexOutOfBounds("MutableArray.updateIndexExn", i, 0, n),
-    );
-  } else {
-    open SyntaxExn;
-    let newValue = fn(arr[i]);
-    arr[i] = newValue;
-    ();
-  };
-};
-
-let updateIndex = (i, fn, arr) =>
-  try (Ok(updateIndexExn(i, fn, arr))) {
-  | e => Error(e)
-  };
+include FeatureMutableIndexed.Add({
+  include MutableArrayCore;
+  let getIndexExn = (i, arr) => SyntaxExn.(arr[i]);
+  let setIndexExn = (i, value, arr) => SyntaxExn.(arr[i] = value);
+});

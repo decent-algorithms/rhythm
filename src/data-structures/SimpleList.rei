@@ -11,3 +11,5 @@ include FeatureSequence.Interface with type tSequence('el) = t('el);
 include FeatureFront.Interface with type tFront('el) = t('el);
 
 include FeatureBack.Interface with type tBack('el) = t('el);
+
+include FeatureIndexed.Interface with type tIndexed('el) = t('el);

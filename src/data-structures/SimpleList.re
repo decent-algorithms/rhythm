@@ -24,6 +24,7 @@ include FeatureBack.Add({
   let fastRemoveLast = SlowRemoveLast;
 });
 
-let getIndex = (i, arr) => Syntax.(arr[i]);
-
-let getIndexExn = (i, arr) => SyntaxExn.(arr[i]);
+include FeatureIndexed.Add({
+  include SimpleListCore;
+  let getIndexExn = (i, ds) => SyntaxExn.(ds[i]);
+});
