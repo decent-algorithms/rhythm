@@ -8,17 +8,13 @@ include FeatureSyntax.Add({
 
 include FeatureSequence.Add(SimpleListCore);
 
-let getFirst = list =>
-  switch (list) {
-  | [] => None
-  | [el, ..._rest] => Some(el)
-  };
-
-let getFirstExn = list =>
-  switch (list) {
-  | [] => raise(Exceptions.Empty("SimpleList.getFirstExn"))
-  | [el, ..._rest] => el
-  };
+include FeatureFront.Add({
+  include SimpleListCore;
+  open FeatureFront;
+  let fastGetFirst = GetFirstExn(SimpleListCore.getFirstExn);
+  let fastAddFirst = AddFirst(SimpleListCore.addFirst);
+  let fastRemoveFirst = RemoveFirstExn(SimpleListCore.removeFirstExn);
+});
 
 let getIndex = (i, arr) => Syntax.(arr[i]);
 
@@ -47,8 +43,6 @@ let getLast = list =>
   try (Some(getLastExn(list))) {
   | e => None
   };
-
-let concat = (listFirst, listLast) => listFirst @ listLast;
 
 /* let addFirst = (el, arr) => concat([|el|], arr); */
 /* let addLast = (el, arr) => concat(arr, [|el|]); */

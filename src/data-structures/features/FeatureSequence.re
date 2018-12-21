@@ -36,6 +36,11 @@ module type Interface = {
   let reduceReverse: (('acc, 'el) => 'acc, 'acc, tSequence('el)) => 'acc;
   let reduceReversei:
     (('acc, int, 'el) => 'acc, 'acc, tSequence('el)) => 'acc;
+
+  let flatten: tSequence(tSequence('el)) => tSequence('el);
+  let concat: (tSequence('el), tSequence('el)) => tSequence('el);
+  let concatList: array(tSequence('el)) => tSequence('el);
+  let concatList: list(tSequence('el)) => tSequence('el);
 };
 
 module Add =
@@ -183,4 +188,33 @@ module Add =
   let filterDropi = (fn, ds) => filterKeepi((i, el) => !fn(i, el), ds);
 
   let filterDrop = (fn, ds) => filterDropi((i, el) => fn(el), ds);
+
+  let concatArray = dsArray => {
+    let arr1D = dsArray;
+    let arr2D = Caml.Array.map(toMutableArray, arr1D);
+    let lengths = Caml.Array.map(Caml.Array.length, arr2D);
+    let sum = Caml.Array.fold_left((sum, x) => sum + x, 0, lengths);
+    let arr = ref(0);
+    let i = ref(0);
+    let fullArray =
+      Caml.Array.init(
+        sum,
+        _ => {
+          while (i^ >= lengths[arr^]) {
+            incr(arr);
+            i := 0;
+          };
+          let value = arr2D[arr^][i^];
+          incr(i);
+          value;
+        },
+      );
+    fromMutableArray(fullArray);
+  };
+
+  let concatList = dsList => dsList |> Caml.Array.of_list |> concatArray;
+
+  let flatten = ds2D => ds2D |> toSimpleList |> concatList;
+
+  let concat = (ds1, ds2) => concatList([ds1, ds2]);
 };

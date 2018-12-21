@@ -1,29 +1,18 @@
 type t('el) = list('el);
 
+let make: unit => t('el);
+let isEmpty: t('el) => bool;
+let length: t('el) => int;
+
 include FeatureSyntax.Interface with type tSyntax('el) = t('el);
 
 include FeatureSequence.Interface with type tSequence('el) = t('el);
 
-/**
- * Creation functions.
- */
-
-let make: unit => t('el);
-let init: (int, int => 'el) => t('el);
-
-/**
- * Information functions.
- */
-
-let isEmpty: t('el) => bool;
-let length: t('el) => int;
-
+include FeatureFront.Interface with type tFront('el) = t('el);
 /**
  * Access functions.
  */
 
-let getFirst: t('el) => option('el);
-let getFirstExn: t('el) => 'el;
 /* let getIndex: (int, t('el)) => option('el); */
 /* let getIndexExn: (int, t('el)) => 'el; */
 let getLast: t('el) => option('el);
@@ -33,15 +22,12 @@ let getLastExn: t('el) => 'el;
  * Add functions.
  */;
 
-/* let addFirst: ('el, t('el)) => t('el); */
 /* let addLast: ('el, t('el)) => t('el); */
 
 /**
  * Remove functions.
  */;
 
-/* let removeFirst: t('el) => option(t('el)); */
-/* let removeFirstExn: t('el) => t('el); */
 /* let removeLast: t('el) => option(t('el)); */
 /* let removeLastExn: t('el) => t('el); */
 
@@ -55,13 +41,6 @@ let getLastExn: t('el) => 'el;
 /* let swapExn: (int, int, t('el)) => unit; */
 /* let updateIndex: (int, 'el => 'el, t('el)) => result(unit, exn); */
 /* let updateIndexExn: (int, 'el => 'el, t('el)) => unit; */
-
-/**
- * Multi-sequence functions.
- */;
-
-/* let flatten: t(t('el)) => t('el); */
-/* let concat: (t('el), t('el)) => t('el); */
 
 /**
  * Match functions.
