@@ -21,3 +21,9 @@ exception InternalError(string);
 
 /* (method, needed number of elements) */
 exception NotEnoughElements(string, int);
+
+/* (method, explanation) */
+exception InvalidArguments(string, string);
+
+/* (method, explanation) */
+exception EmptyRange(string, string);
