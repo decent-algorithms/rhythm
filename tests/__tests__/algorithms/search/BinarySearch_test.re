@@ -66,6 +66,9 @@ describe("BinarySearch", ({test}) => {
         (),
       );
     let result = Option.getExn(result);
+    /* Helper to round floats. */
+    let roundFloat = f => int_of_float(floor(f +. 0.5));
     expect.bool(abs_float(answer -. result) <= 1e-6).toBeTrue();
+    expect.int(roundFloat(result *. result)).toBe(17);
   });
 });
