@@ -25,7 +25,6 @@ let rec searchInternal =
         : option('key) => {
   ();
   if (continue(first, last)) {
-    print_endline("mid");
     let mid = getMiddle(first, last);
     /* print_int(mid); */
     let midEl = get(mid);
