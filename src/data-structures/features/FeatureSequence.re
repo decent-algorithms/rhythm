@@ -134,7 +134,13 @@ module Add =
 
   let forEach = (fn, ds) => forEachi((i, el) => fn(el), ds);
 
-  let reverse = ds => ds |> Config.toList |> Caml.List.rev |> Config.fromList;
+  let reverse =
+    switch (Config.fastReverse) {
+    | SlowReverse => (
+        ds => ds |> Config.toList |> Caml.List.rev |> Config.fromList
+      )
+    | Reverse(reverse) => reverse
+    };
 
   let reducei = (fn, initialValue, ds) => {
     let list = Config.toList(ds);
