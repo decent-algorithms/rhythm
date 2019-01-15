@@ -1,7 +1,8 @@
 include MutableArrayListCore;
 
 include FeatureSequence.Add({
-  include FeatureSequence.DefaultConfig;
+  open FeatureSequence;
+  include Default;
   include MutableArrayListCore;
 });
 
@@ -13,16 +14,18 @@ include FeatureMutableSyntax.Add({
 });
 
 include FeatureFront.Add({
-  include MutableArrayListCore;
   open FeatureFront;
+  include Default;
+  include MutableArrayListCore;
   let fastGetFirst = GetFirstExn(ds => getIndexExn(0, ds));
   let fastAddFirst = AddFirst(addFirst);
   let fastRemoveFirst = RemoveFirstExn(removeFirstExn);
 });
 
 include FeatureBack.Add({
-  include MutableArrayListCore;
   open FeatureBack;
+  include Default;
+  include MutableArrayListCore;
   let fastGetLast = GetLastExn(ds => getIndexExn(length(ds) - 1, ds));
   let fastAddLast = AddLast(addLast);
   let fastRemoveLast = RemoveLastExn(removeLastExn);

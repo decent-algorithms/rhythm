@@ -22,6 +22,12 @@ module type Config = {
   let fastRemoveFirst: fastRemoveFirst(t('el), 'el);
 };
 
+module Default = {
+  let fastGetFirst = SlowGetFirst;
+  let fastAddFirst = SlowAddFirst;
+  let fastRemoveFirst = SlowRemoveFirst;
+};
+
 module type Interface = {
   type tFront('el);
 

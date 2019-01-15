@@ -7,24 +7,23 @@ include FeatureMutableSyntax.Add({
 });
 
 include FeatureSequence.Add({
-  include FeatureSequence.DefaultConfig;
+  open FeatureSequence;
+  include Default;
   include MutableArrayCore;
 });
 
 include FeatureFront.Add({
-  include MutableArrayCore;
   open FeatureFront;
+  include Default;
+  include MutableArrayCore;
   let fastGetFirst = GetFirstExn(arr => SyntaxExn.(arr[0]));
-  let fastAddFirst = SlowAddFirst;
-  let fastRemoveFirst = SlowRemoveFirst;
 });
 
 include FeatureBack.Add({
-  include MutableArrayCore;
   open FeatureBack;
+  include Default;
+  include MutableArrayCore;
   let fastGetLast = GetLastExn(arr => SyntaxExn.(arr[length(arr) - 1]));
-  let fastAddLast = SlowAddLast;
-  let fastRemoveLast = SlowRemoveLast;
 });
 
 include FeatureIndexed.Add({

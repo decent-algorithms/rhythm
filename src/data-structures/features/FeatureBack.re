@@ -22,6 +22,12 @@ module type Config = {
   let fastRemoveLast: fastRemoveLast(t('el), 'el);
 };
 
+module Default = {
+  let fastGetLast = SlowGetLast;
+  let fastAddLast = SlowAddLast;
+  let fastRemoveLast = SlowRemoveLast;
+};
+
 module type Interface = {
   type tBack('el);
 

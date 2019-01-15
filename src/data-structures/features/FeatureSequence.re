@@ -9,7 +9,7 @@ module type Config = {
   let fastReverse: fastReverse(t('el), 'el);
 };
 
-module DefaultConfig = {
+module Default = {
   let fastReverse = SlowReverse;
 };
 

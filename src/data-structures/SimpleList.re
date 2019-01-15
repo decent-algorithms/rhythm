@@ -6,24 +6,24 @@ include FeatureSyntax.Add({
 });
 
 include FeatureSequence.Add({
-  include FeatureSequence.DefaultConfig;
+  open FeatureSequence;
+  include Default;
   include SimpleListCore;
 });
 
 include FeatureFront.Add({
-  include SimpleListCore;
   open FeatureFront;
+  include Default;
+  include SimpleListCore;
   let fastGetFirst = GetFirstExn(SimpleListCore.getFirstExn);
   let fastAddFirst = AddFirst(SimpleListCore.addFirst);
   let fastRemoveFirst = RemoveFirstExn(SimpleListCore.removeFirstExn);
 });
 
 include FeatureBack.Add({
-  include SimpleListCore;
   open FeatureBack;
-  let fastGetLast = SlowGetLast;
-  let fastAddLast = SlowAddLast;
-  let fastRemoveLast = SlowRemoveLast;
+  include Default;
+  include SimpleListCore;
 });
 
 include FeatureIndexed.Add({
