@@ -7,6 +7,7 @@ include FeatureMutableSyntax.Add({
 });
 
 include FeatureSequence.Add({
+  include FeatureSequence.DefaultConfig;
   include MutableArrayCore;
 });
 

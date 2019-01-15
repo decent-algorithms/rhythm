@@ -1,6 +1,7 @@
 include MutableArrayListCore;
 
 include FeatureSequence.Add({
+  include FeatureSequence.DefaultConfig;
   include MutableArrayListCore;
 });
 

@@ -5,7 +5,10 @@ include FeatureSyntax.Add({
   let get = Caml.List.nth;
 });
 
-include FeatureSequence.Add(SimpleListCore);
+include FeatureSequence.Add({
+  include FeatureSequence.DefaultConfig;
+  include SimpleListCore;
+});
 
 include FeatureFront.Add({
   include SimpleListCore;

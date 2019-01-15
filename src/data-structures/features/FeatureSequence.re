@@ -1,7 +1,16 @@
+type fastReverse('ds, 'el) =
+  | SlowReverse
+  | Reverse('ds => 'ds);
+
 module type Config = {
   type t('el);
   let toList: t('el) => list('el);
   let fromList: list('el) => t('el);
+  let fastReverse: fastReverse(t('el), 'el);
+};
+
+module DefaultConfig = {
+  let fastReverse = SlowReverse;
 };
 
 module type Interface = {
@@ -17,6 +26,9 @@ module type Interface = {
 
   let toMutableArrayList: tSequence('el) => MutableArrayListCore.t('el);
   let fromMutableArrayList: MutableArrayListCore.t('el) => tSequence('el);
+
+  let toDeque: tSequence('el) => DequeCore.t('el);
+  let fromDeque: DequeCore.t('el) => tSequence('el);
 
   let every: ('el => bool, tSequence('el)) => bool;
   let everyi: ((int, 'el) => bool, tSequence('el)) => bool;
@@ -65,6 +77,9 @@ module Add =
     ds |> Config.toList |> MutableArrayListCore.fromList;
   let fromMutableArrayList = ds =>
     ds |> MutableArrayListCore.toList |> Config.fromList;
+
+  let toDeque = ds => ds |> Config.toList |> DequeCore.fromList;
+  let fromDeque = ds => ds |> DequeCore.toList |> Config.fromList;
 
   let everyi = (fn, ds) => {
     let list = Config.toList(ds);
