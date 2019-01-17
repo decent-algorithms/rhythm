@@ -10,12 +10,12 @@ let toList: t('el) => list('el) = list => list;
 let fromList: list('el) => t('el) = list => list;
 let getFirstExn = list =>
   switch (list) {
-  | [] => raise(Exceptions.Empty("SimpleListCore.getFirstExn"))
+  | [] => raise(Exceptions.Empty("OCamlListCore.getFirstExn"))
   | [hd, ..._] => hd
   };
 let addFirst = (el, list) => [el, ...list];
 let removeFirstExn = list =>
   switch (list) {
-  | [] => raise(Exceptions.Empty("SimpleListCore.removeFirstExn"))
+  | [] => raise(Exceptions.Empty("OCamlListCore.removeFirstExn"))
   | [_el, ...rest] => rest
   };

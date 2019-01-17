@@ -80,7 +80,7 @@ module Add =
     | _ => (
         ds => {
           let list = Config.toList(ds);
-          SimpleListCore.getFirstExn(list);
+          OCamlListCore.getFirstExn(list);
         }
       )
     };
@@ -109,8 +109,8 @@ module Add =
           let list = ref(list);
           let result = ref([]);
           for (i in 0 to count - 1) {
-            result := [SimpleListCore.getFirstExn(list^), ...result^];
-            list := SimpleListCore.removeFirstExn(list^);
+            result := [OCamlListCore.getFirstExn(list^), ...result^];
+            list := OCamlListCore.removeFirstExn(list^);
           };
           result^ |> Caml.List.rev |> Config.fromList;
         }
@@ -164,7 +164,7 @@ module Add =
           let list = Config.toList(ds);
           let list = ref(list);
           for (i in 0 to count - 1) {
-            list := SimpleListCore.removeFirstExn(list^);
+            list := OCamlListCore.removeFirstExn(list^);
           };
           list^ |> Config.fromList;
         }

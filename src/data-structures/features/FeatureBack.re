@@ -59,7 +59,7 @@ module Add =
     | GetLastExn(getLastExn) => getLastExn
     | _ => (
         ds =>
-          ds |> Config.toList |> Caml.List.rev |> SimpleListCore.getFirstExn
+          ds |> Config.toList |> Caml.List.rev |> OCamlListCore.getFirstExn
       )
     };
 
@@ -87,8 +87,8 @@ module Add =
           let list = ref(list);
           let result = ref([]);
           for (i in 0 to count - 1) {
-            result := [SimpleListCore.getFirstExn(list^), ...result^];
-            list := SimpleListCore.removeFirstExn(list^);
+            result := [OCamlListCore.getFirstExn(list^), ...result^];
+            list := OCamlListCore.removeFirstExn(list^);
           };
           result^ |> Config.fromList;
         }
@@ -146,7 +146,7 @@ module Add =
           let list = Caml.List.rev(list);
           let list = ref(list);
           for (i in 0 to count - 1) {
-            list := SimpleListCore.removeFirstExn(list^);
+            list := OCamlListCore.removeFirstExn(list^);
           };
           list^ |> Caml.List.rev |> Config.fromList;
         }

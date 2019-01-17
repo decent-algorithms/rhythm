@@ -1,7 +1,7 @@
-include MutableArrayCore;
+include OCamlArrayCore;
 
 include FeatureMutableSyntax.Add({
-  include MutableArrayCore;
+  include OCamlArrayCore;
   let get = Caml.Array.get;
   let set = Caml.Array.set;
 });
@@ -9,30 +9,30 @@ include FeatureMutableSyntax.Add({
 include FeatureSequence.Add({
   open FeatureSequence;
   include Default;
-  include MutableArrayCore;
+  include OCamlArrayCore;
 });
 
 include FeatureFront.Add({
   open FeatureFront;
   include Default;
-  include MutableArrayCore;
+  include OCamlArrayCore;
   let fastGetFirst = GetFirstExn(arr => SyntaxExn.(arr[0]));
 });
 
 include FeatureBack.Add({
   open FeatureBack;
   include Default;
-  include MutableArrayCore;
+  include OCamlArrayCore;
   let fastGetLast = GetLastExn(arr => SyntaxExn.(arr[length(arr) - 1]));
 });
 
 include FeatureIndexed.Add({
-  include MutableArrayCore;
+  include OCamlArrayCore;
   let getIndexExn = (i, arr) => SyntaxExn.(arr[i]);
 });
 
 include FeatureMutableIndexed.Add({
-  include MutableArrayCore;
+  include OCamlArrayCore;
   let getIndexExn = (i, arr) => SyntaxExn.(arr[i]);
   let setIndexExn = (i, value, arr) => SyntaxExn.(arr[i] = value);
 });
