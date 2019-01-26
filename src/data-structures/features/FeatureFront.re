@@ -96,7 +96,7 @@ module Add =
         (count, ds) => {
           let ds = ref(ds);
           let result = ref([]);
-          for (i in 0 to count - 1) {
+          for (_i in 0 to count - 1) {
             result := [getFirstExn(ds^), ...result^];
             ds := removeFirstExn(ds^);
           };
@@ -108,7 +108,7 @@ module Add =
           let list = Config.toList(ds);
           let list = ref(list);
           let result = ref([]);
-          for (i in 0 to count - 1) {
+          for (_i in 0 to count - 1) {
             result := [OCamlListCore.getFirstExn(list^), ...result^];
             list := OCamlListCore.removeFirstExn(list^);
           };
@@ -153,7 +153,7 @@ module Add =
     | RemoveFirstExn(removeFirstExn) => (
         (count, ds) => {
           let ds = ref(ds);
-          for (i in 0 to count - 1) {
+          for (_i in 0 to count - 1) {
             ds := removeFirstExn(ds^);
           };
           ds^;
@@ -163,7 +163,7 @@ module Add =
         (count, ds) => {
           let list = Config.toList(ds);
           let list = ref(list);
-          for (i in 0 to count - 1) {
+          for (_i in 0 to count - 1) {
             list := OCamlListCore.removeFirstExn(list^);
           };
           list^ |> Config.fromList;
