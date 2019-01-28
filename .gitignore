@@ -9,6 +9,7 @@ pkg/META
 *.log
 *~
 node_modules
+website/build
 # gitignored, but not npmignored. Published by `npm run prepublish`
 _esybuild
 _esyinstall
