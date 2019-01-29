@@ -49,7 +49,7 @@ const siteConfig = {
   /* path to images for header/footer */
   headerIcon: 'img/logo-quick.svg',
   footerIcon: 'img/logo-quick.svg',
-  favicon: 'img/favicon.svg',
+  favicon: 'img/favicon-beat.svg',
 
   /* Colors for website */
   /* https://coolors.co/f75c03-d90368-820263-291720-04a777 */
