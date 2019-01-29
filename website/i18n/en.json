@@ -5,16 +5,28 @@
     "previous": "Previous",
     "tagline": "Data Structures and Algorithms implemented for Reason",
     "docs": {
-      "intro": {
-        "title": "Intro"
+      "deque-api": {
+        "title": "Deque"
+      },
+      "deque": {
+        "title": "Deque"
+      },
+      "usage": {
+        "title": "Usage"
+      },
+      "welcome": {
+        "title": "Welcome"
       }
     },
     "links": {
-      "Docs": "Docs",
+      "Guides": "Guides",
+      "API": "API",
       "Users": "Users",
       "GitHub": "GitHub"
     },
     "categories": {
+      "Overview": "Overview",
+      "Data Structures": "Data Structures",
       "Getting Started": "Getting Started"
     }
   },

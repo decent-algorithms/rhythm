@@ -38,24 +38,26 @@ const siteConfig = {
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    {doc: 'intro', label: 'Docs'},
+    {doc: 'welcome', label: 'Guides'},
+    {doc: 'usage', label: 'API'},
     {page: 'users', label: 'Users'},
-    {href: 'https://github.com/decent-algorithms/rhythm', label: 'GitHub'}
+    {href: 'https://github.com/decent-algorithms/rhythm', label: 'GitHub'},
+    {search: true}
   ],
 
   // If you have users set above, you add it here:
   users,
 
   /* path to images for header/footer */
-  headerIcon: 'img/logo-quick.svg',
+  headerIcon: 'img/logo-quick-white.svg',
   footerIcon: 'img/logo-quick.svg',
   favicon: 'img/favicon-beat.svg',
 
   /* Colors for website */
   /* https://coolors.co/f75c03-d90368-820263-291720-04a777 */
   colors: {
-    primaryColor: '#20232A',
-    secondaryColor: '#04A777',
+    primaryColor: '#04A777',
+    secondaryColor: '#20232A',
   },
 
   /* Custom fonts for website */

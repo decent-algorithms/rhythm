@@ -1,5 +1,10 @@
 {
-  "docs": {
-    "Getting Started": ["intro"]
+  "guides": {
+    "Overview": ["welcome"],
+    "Data Structures": ["deque"]
+  },
+  "api": {
+    "Getting Started": ["usage"],
+    "Data Structures": ["deque-api"]
   }
 }
