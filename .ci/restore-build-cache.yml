@@ -28,4 +28,4 @@ steps:
     continueOnError: true
     workingDirectory: '$(STAGING_DIRECTORY)'
     condition: and(succeeded(), ne(variables['Build.SourceBranch'], 'refs/heads/master'))
-displayName: '[Cache][Restore] Clean up'
+    displayName: '[Cache][Restore] Clean up'

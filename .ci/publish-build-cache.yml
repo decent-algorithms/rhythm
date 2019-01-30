@@ -17,4 +17,4 @@ steps:
         pathToPublish: '$(STAGING_DIRECTORY)'
         artifactName: 'cache-$(Agent.OS)-install'
         parallel: true
-parallelCount: 8
+        parallelCount: 8
