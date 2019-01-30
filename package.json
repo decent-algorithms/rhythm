@@ -1,6 +1,6 @@
 {
   "name": "rhythm",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Data Structures and Algorithms implemented in Reason",
   "license": "MIT",
   "esy": {
