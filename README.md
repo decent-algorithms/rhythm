@@ -1,4 +1,7 @@
 # Rhythm
+
+[![Build Status](https://dev.azure.com/decent-algorithms/rhythm/_apis/build/status/decent-algorithms.rhythm?branchName=master)](https://dev.azure.com/decent-algorithms/rhythm/_build/latest?definitionId=1?branchName=master)
+
 Data Structures and Algorithms implemented in Reason
 
 # Contributing
