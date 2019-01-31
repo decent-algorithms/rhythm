@@ -5,4 +5,5 @@ title: Usage
 
 > 🚧 The site is currently under construction 🚧
 
-[Currently released on OPAM](https://opam.ocaml.org/packages/rhythm/).
+- [Released on npm](https://www.npmjs.com/package/rhythm).
+- [Released on opam](https://opam.ocaml.org/packages/rhythm/).
