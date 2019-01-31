@@ -1,6 +1,9 @@
 {
   "guides": {
-    "Overview": ["welcome"],
+    "Overview": [
+      "welcome",
+      "courses"
+    ],
     "Data Structures": ["deque"]
   },
   "api": {

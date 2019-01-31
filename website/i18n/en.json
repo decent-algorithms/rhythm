@@ -5,6 +5,9 @@
     "previous": "Previous",
     "tagline": "Data Structures and Algorithms implemented for Reason",
     "docs": {
+      "courses": {
+        "title": "Courses"
+      },
       "deque-api": {
         "title": "Deque"
       },
