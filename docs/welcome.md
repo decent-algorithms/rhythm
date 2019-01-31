@@ -17,10 +17,3 @@ projects. If you are just looking to consume these data structures, head on
 over to the [API docs](usage).
 
 Happy learning!
-
-- Testing publish 1
-- Testing publish 2
-- Testing publish 3
-- Testing publish 4
-- Testing publish 5
-- Testing publish 6
