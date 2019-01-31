@@ -1,9 +1,0 @@
-steps:
-  - bash: 'cd website'
-    displayName: 'cd website'
-
-  - script: 'npm install'
-    displayName: 'npm install'
-
-  - script: 'npm run build'
-    displayName: 'npm run build'
