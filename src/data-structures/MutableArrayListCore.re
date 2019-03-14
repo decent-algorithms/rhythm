@@ -46,16 +46,19 @@ let toList: t('el) => list('el) =
   };
 
 let fromList: list('el) => t('el) =
-  list => {
-    let arr = list |> Caml.Array.of_list |> Caml.Array.map(el => Some(el));
-    let ds = {
-      first: 0,
-      length: Caml.Array.length(arr),
-      capacity: Caml.Array.length(arr),
-      data: arr,
+  list =>
+    switch (list) {
+    | [] => make()
+    | _ =>
+      let arr = list |> Caml.Array.of_list |> Caml.Array.map(el => Some(el));
+      let ds = {
+        first: 0,
+        length: Caml.Array.length(arr),
+        capacity: Caml.Array.length(arr),
+        data: arr,
+      };
+      ds;
     };
-    ds;
-  };
 
 let getIndexExn = (index, ds) => {
   ();
