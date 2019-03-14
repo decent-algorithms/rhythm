@@ -1,8 +1,8 @@
 open TestFramework;
 open Rhythm;
 
-describe("OCamlArray", ({describe, test}) => {
-  module FeatureBackTests = FeatureBackTests.Add(OCamlArray);
+describe("CamlArray", ({describe, test}) => {
+  module FeatureBackTests = FeatureBackTests.Add(CamlArray);
   FeatureBackTests.register(describe);
 
   test("Syntax", ({expect}) => {
@@ -13,7 +13,7 @@ describe("OCamlArray", ({describe, test}) => {
     /*
      * A standard, safe syntax for accessing into an array.
      */
-    open OCamlArray.Syntax;
+    open CamlArray.Syntax;
     let arr = [|0, 1, 2, 3, 4|];
     let one = arr[1] |> Option.getExn;
     expect.int(one).toBe(1);
@@ -24,7 +24,7 @@ describe("OCamlArray", ({describe, test}) => {
      * The nested syntax accepts an optional array as input so that deeply
      * nested arrays can still be easily accessed.
      */
-    open OCamlArray.SyntaxNested;
+    open CamlArray.SyntaxNested;
     let arr = [|0, 1, 2, 3, 4|];
     let arr = [|arr, arr, arr, arr, arr|];
     let arr = [|arr, arr, arr, arr, arr|];
@@ -38,7 +38,7 @@ describe("OCamlArray", ({describe, test}) => {
      * This is the standard array syntax that is unsafe and can throw
      * exceptions when given invalid indices.
      */
-    open OCamlArray.SyntaxExn;
+    open CamlArray.SyntaxExn;
     let arr = [|0, 1, 2, 3, 4|];
     let arr = [|arr, arr, arr, arr, arr|];
     let one = arr[2][1];
@@ -52,7 +52,7 @@ describe("OCamlArray", ({describe, test}) => {
      * Because it may be recommended to open modules to enable syntax we
      * provide a module to reset syntax that was opened.
      */
-    open OCamlArray.SyntaxReset;
+    open CamlArray.SyntaxReset;
     let arr = [|0, 1, 2, 3, 4|];
     /* This is an error, because we reset the Array syntax. */
     /* let one = arr[1]; */
@@ -63,7 +63,7 @@ describe("OCamlArray", ({describe, test}) => {
   test("match functions", ({expect}) => {
     let arr = [|0, 1, 2, 3, 4|];
     let result =
-      switch (OCamlArray.match2(arr)) {
+      switch (CamlArray.match2(arr)) {
       | Some((0, 1, rest)) => true
       | _ => false
       };
@@ -71,7 +71,7 @@ describe("OCamlArray", ({describe, test}) => {
 
     let arr = [|0, 1, 2, 3, 4|];
     let result =
-      switch (OCamlArray.match5(arr)) {
+      switch (CamlArray.match5(arr)) {
       | Some((0, 1, 2, 3, 4, rest)) => true
       | _ => false
       };
@@ -79,7 +79,7 @@ describe("OCamlArray", ({describe, test}) => {
 
     let arr = [|0, 1, 2, 3, 4|];
     let result =
-      switch (OCamlArray.match6(arr)) {
+      switch (CamlArray.match6(arr)) {
       | Some((0, 1, 2, 3, 4, 5, rest)) => true
       | _ => false
       };
@@ -87,7 +87,7 @@ describe("OCamlArray", ({describe, test}) => {
 
     let arr = [|0, 1, 2, 3, 4|];
     let result =
-      switch (OCamlArray.match2Exn(arr)) {
+      switch (CamlArray.match2Exn(arr)) {
       | (0, 1, rest) => true
       | _ => false
       };
@@ -95,7 +95,7 @@ describe("OCamlArray", ({describe, test}) => {
 
     let arr = [|0, 1, 2, 3, 4|];
     let result =
-      switch (OCamlArray.match5Exn(arr)) {
+      switch (CamlArray.match5Exn(arr)) {
       | (0, 1, 2, 3, 4, rest) => true
       | _ => false
       };

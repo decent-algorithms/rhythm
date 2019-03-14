@@ -1,22 +1,22 @@
 open TestFramework;
 open Rhythm;
 
-describe("OCamlList", ({describe, test}) => {
-  module FeatureBackTests = FeatureBackTests.Add(OCamlList);
+describe("CamlList", ({describe, test}) => {
+  module FeatureBackTests = FeatureBackTests.Add(CamlList);
   FeatureBackTests.register(describe);
 
   test("make", ({expect}) => {
-    let list = OCamlList.make();
-    expect.int(OCamlList.length(list)).toBe(0);
-    expect.bool(OCamlList.isEmpty(list)).toBeTrue();
+    let list = CamlList.make();
+    expect.int(CamlList.length(list)).toBe(0);
+    expect.bool(CamlList.isEmpty(list)).toBeTrue();
   });
 
   test("init", ({expect}) => {
-    let list = OCamlList.init(5, i => i);
-    expect.int(OCamlList.length(list)).toBe(5);
-    expect.bool(OCamlList.isEmpty(list)).toBeFalse();
-    expect.int(OCamlList.getFirstExn(list)).toBe(0);
-    expect.int(OCamlList.getLastExn(list)).toBe(4);
+    let list = CamlList.init(5, i => i);
+    expect.int(CamlList.length(list)).toBe(5);
+    expect.bool(CamlList.isEmpty(list)).toBeFalse();
+    expect.int(CamlList.getFirstExn(list)).toBe(0);
+    expect.int(CamlList.getLastExn(list)).toBe(4);
   });
 
   test("Syntax", ({expect}) => {
@@ -27,7 +27,7 @@ describe("OCamlList", ({describe, test}) => {
     /*
      * A standard, safe syntax for accessing into an array.
      */
-    open OCamlList.Syntax;
+    open CamlList.Syntax;
     let list = [0, 1, 2, 3, 4];
     let one = list[1] |> Option.getExn;
     expect.int(one).toBe(1);
@@ -35,7 +35,7 @@ describe("OCamlList", ({describe, test}) => {
      * The nested syntax accepts an optional array as input so that deeply
      * nested arrays can still be easily accessed.
      */
-    open OCamlList.SyntaxNested;
+    open CamlList.SyntaxNested;
     let list = [0, 1, 2, 3, 4];
     let list = [list, list, list, list, list];
     let list = [list, list, list, list, list];
@@ -46,7 +46,7 @@ describe("OCamlList", ({describe, test}) => {
      * This is the standard array syntax that is unsafe and can throw
      * exceptions when given invalid indices.
      */
-    open OCamlList.SyntaxExn;
+    open CamlList.SyntaxExn;
     let list = [0, 1, 2, 3, 4];
     let list = [list, list, list, list, list];
     let one = list[2][1];
@@ -57,7 +57,7 @@ describe("OCamlList", ({describe, test}) => {
      * Because it may be recommended to open modules to enable syntax we
      * provide a module to reset syntax that was opened.
      */
-    open OCamlList.SyntaxReset;
+    open CamlList.SyntaxReset;
     let list = [0, 1, 2, 3, 4];
     /* This is an error, because we reset the Array syntax. */
     /* let one = list[1]; */

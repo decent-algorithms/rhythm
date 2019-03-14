@@ -18,11 +18,11 @@ module type Interface = {
 
   let init: (int, int => 'el) => tSequence('el);
 
-  let toOCamlList: tSequence('el) => OCamlListCore.t('el);
-  let fromOCamlList: OCamlListCore.t('el) => tSequence('el);
+  let toCamlList: tSequence('el) => CamlListCore.t('el);
+  let fromCamlList: CamlListCore.t('el) => tSequence('el);
 
-  let toOCamlArray: tSequence('el) => OCamlArrayCore.t('el);
-  let fromOCamlArray: OCamlArrayCore.t('el) => tSequence('el);
+  let toCamlArray: tSequence('el) => CamlArrayCore.t('el);
+  let fromCamlArray: CamlArrayCore.t('el) => tSequence('el);
 
   let toMutableArrayList: tSequence('el) => MutableArrayListCore.t('el);
   let fromMutableArrayList: MutableArrayListCore.t('el) => tSequence('el);
@@ -64,13 +64,13 @@ module Add =
   type tSequence('el) = Config.t('el);
 
   let init = (count, f) =>
-    Caml.Array.init(count, f) |> OCamlArrayCore.toList |> Config.fromList;
+    Caml.Array.init(count, f) |> CamlArrayCore.toList |> Config.fromList;
 
-  let toOCamlList = ds => ds |> Config.toList |> OCamlListCore.fromList;
-  let fromOCamlList = ds => ds |> OCamlListCore.toList |> Config.fromList;
+  let toCamlList = ds => ds |> Config.toList |> CamlListCore.fromList;
+  let fromCamlList = ds => ds |> CamlListCore.toList |> Config.fromList;
 
-  let toOCamlArray = ds => ds |> Config.toList |> OCamlArrayCore.fromList;
-  let fromOCamlArray = ds => ds |> OCamlArrayCore.toList |> Config.fromList;
+  let toCamlArray = ds => ds |> Config.toList |> CamlArrayCore.fromList;
+  let fromCamlArray = ds => ds |> CamlArrayCore.toList |> Config.fromList;
 
   let toMutableArrayList = ds =>
     ds |> Config.toList |> MutableArrayListCore.fromList;
@@ -85,7 +85,7 @@ module Add =
     let list = ref(list);
     let result = ref(true);
     let i = ref(0);
-    while (result^ && !OCamlListCore.isEmpty(list^)) {
+    while (result^ && !CamlListCore.isEmpty(list^)) {
       switch (list^) {
       | [hd, ...rest] =>
         list := rest;
@@ -106,7 +106,7 @@ module Add =
     let list = ref(list);
     let result = ref(false);
     let i = ref(0);
-    while (! result^ && !OCamlListCore.isEmpty(list^)) {
+    while (! result^ && !CamlListCore.isEmpty(list^)) {
       switch (list^) {
       | [hd, ...rest] =>
         list := rest;
@@ -146,7 +146,7 @@ module Add =
     let list = ref(list);
     let result = ref(initialValue);
     let i = ref(0);
-    while (!OCamlListCore.isEmpty(list^)) {
+    while (!CamlListCore.isEmpty(list^)) {
       switch (list^) {
       | [hd, ...rest] =>
         list := rest;
@@ -168,7 +168,7 @@ module Add =
     let result = ref(initialValue);
     let i = Caml.List.length(list^) - 1;
     let i = ref(i);
-    while (!OCamlListCore.isEmpty(list^)) {
+    while (!CamlListCore.isEmpty(list^)) {
       switch (list^) {
       | [hd, ...rest] =>
         list := rest;
@@ -197,7 +197,7 @@ module Add =
     let list = ref(list);
     let resultRev = ref([]);
     let i = ref(0);
-    while (!OCamlListCore.isEmpty(list^)) {
+    while (!CamlListCore.isEmpty(list^)) {
       switch (list^) {
       | [hd, ...rest] =>
         list := rest;
@@ -219,7 +219,7 @@ module Add =
 
   let concatArray = dsArray => {
     let arr1D = dsArray;
-    let arr2D = Caml.Array.map(toOCamlArray, arr1D);
+    let arr2D = Caml.Array.map(toCamlArray, arr1D);
     let lengths = Caml.Array.map(Caml.Array.length, arr2D);
     let sum = Caml.Array.fold_left((sum, x) => sum + x, 0, lengths);
     let arr = ref(0);
@@ -237,12 +237,12 @@ module Add =
           value;
         },
       );
-    fromOCamlArray(fullArray);
+    fromCamlArray(fullArray);
   };
 
   let concatList = dsList => dsList |> Caml.Array.of_list |> concatArray;
 
-  let flatten = ds2D => ds2D |> toOCamlList |> concatList;
+  let flatten = ds2D => ds2D |> toCamlList |> concatList;
 
   let concat = (ds1, ds2) => concatList([ds1, ds2]);
 };

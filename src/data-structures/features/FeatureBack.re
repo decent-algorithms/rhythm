@@ -188,7 +188,7 @@ module Add =
     switch (Config.fastGetLast) {
     | GetLastExn(getLastExn) => getLastExn
     | _ => (
-        ds => ds |> Config.toList |> Caml.List.rev |> OCamlListCore.getFirstExn
+        ds => ds |> Config.toList |> Caml.List.rev |> CamlListCore.getFirstExn
       )
     };
 
@@ -216,8 +216,8 @@ module Add =
           let list = ref(list);
           let result = ref([]);
           for (i in 0 to count - 1) {
-            result := [OCamlListCore.getFirstExn(list^), ...result^];
-            list := OCamlListCore.removeFirstExn(list^);
+            result := [CamlListCore.getFirstExn(list^), ...result^];
+            list := CamlListCore.removeFirstExn(list^);
           };
           result^ |> Config.fromList;
         }
@@ -275,7 +275,7 @@ module Add =
           let list = Caml.List.rev(list);
           let list = ref(list);
           for (i in 0 to count - 1) {
-            list := OCamlListCore.removeFirstExn(list^);
+            list := CamlListCore.removeFirstExn(list^);
           };
           list^ |> Caml.List.rev |> Config.fromList;
         }

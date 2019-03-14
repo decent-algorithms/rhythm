@@ -1,32 +1,32 @@
-include OCamlListCore;
+include CamlListCore;
 
 include FeatureSyntax.Add({
-  include OCamlListCore;
+  include CamlListCore;
   let get = Caml.List.nth;
 });
 
 include FeatureSequence.Add({
   open FeatureSequence;
   include Default;
-  include OCamlListCore;
+  include CamlListCore;
 });
 
 include FeatureFront.Add({
   open FeatureFront;
   include Default;
-  include OCamlListCore;
-  let fastGetFirst = GetFirstExn(OCamlListCore.getFirstExn);
-  let fastAddFirst = AddFirst(OCamlListCore.addFirst);
-  let fastRemoveFirst = RemoveFirstExn(OCamlListCore.removeFirstExn);
+  include CamlListCore;
+  let fastGetFirst = GetFirstExn(CamlListCore.getFirstExn);
+  let fastAddFirst = AddFirst(CamlListCore.addFirst);
+  let fastRemoveFirst = RemoveFirstExn(CamlListCore.removeFirstExn);
 });
 
 include FeatureBack.Add({
   open FeatureBack;
   include Default;
-  include OCamlListCore;
+  include CamlListCore;
 });
 
 include FeatureIndexed.Add({
-  include OCamlListCore;
+  include CamlListCore;
   let getIndexExn = (i, ds) => SyntaxExn.(ds[i]);
 });

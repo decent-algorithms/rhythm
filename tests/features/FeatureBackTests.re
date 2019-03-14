@@ -2,8 +2,8 @@ open Rhythm;
 
 module type DS = {
   type t('el);
-  let toOCamlList: t('el) => list('el);
-  let fromOCamlList: list('el) => t('el);
+  let toCamlList: t('el) => list('el);
+  let fromCamlList: list('el) => t('el);
   include FeatureBack.Interface with type tBack('el) = t('el);
 };
 
@@ -17,7 +17,7 @@ module Add = (DS: DS) : Output => {
         let none = (-1);
         let getLast = list =>
           list
-          |> DS.fromOCamlList
+          |> DS.fromCamlList
           |> DS.getLast
           |> Option.getWithDefault(none);
         /* Examples */
@@ -28,7 +28,7 @@ module Add = (DS: DS) : Output => {
       });
 
       test("getLastExn", ({expect}) => {
-        let getLastExn = list => list |> DS.fromOCamlList |> DS.getLastExn;
+        let getLastExn = list => list |> DS.fromCamlList |> DS.getLastExn;
         /* Examples */
         expect.int(getLastExn([1, 2, 3, 4])).toBe(4);
         expect.fn(() => getLastExn([])).toThrow();
@@ -40,10 +40,10 @@ module Add = (DS: DS) : Output => {
         let none = [(-1)];
         let getLastN = (n, list) =>
           list
-          |> DS.fromOCamlList
+          |> DS.fromCamlList
           |> DS.getLastN(n)
-          |> Option.getWithDefault(DS.fromOCamlList(none))
-          |> DS.toOCamlList;
+          |> Option.getWithDefault(DS.fromCamlList(none))
+          |> DS.toCamlList;
         /* Examples */
         expect.list(getLastN(2, [1, 2, 3, 4])).toEqual([3, 4]);
         expect.list(getLastN(1, [1, 2, 3, 4])).toEqual([4]);
@@ -54,7 +54,7 @@ module Add = (DS: DS) : Output => {
 
       test("getLastNExn", ({expect}) => {
         let getLastNExn = (n, list) =>
-          list |> DS.fromOCamlList |> DS.getLastNExn(n) |> DS.toOCamlList;
+          list |> DS.fromCamlList |> DS.getLastNExn(n) |> DS.toCamlList;
         /* Examples */
         expect.list(getLastNExn(2, [1, 2, 3, 4])).toEqual([3, 4]);
         expect.list(getLastNExn(1, [1, 2, 3, 4])).toEqual([4]);
@@ -65,7 +65,7 @@ module Add = (DS: DS) : Output => {
 
       test("addLast", ({expect}) => {
         let addLast = (el, list) =>
-          list |> DS.fromOCamlList |> DS.addLast(el) |> DS.toOCamlList;
+          list |> DS.fromCamlList |> DS.addLast(el) |> DS.toCamlList;
         /* Examples */
         expect.list(addLast(9, [1, 2, 3])).toEqual([1, 2, 3, 9]);
         expect.list(addLast(9, [])).toEqual([9]);
@@ -75,10 +75,10 @@ module Add = (DS: DS) : Output => {
         let none = [(-1)];
         let removeLast = list =>
           list
-          |> DS.fromOCamlList
+          |> DS.fromCamlList
           |> DS.removeLast
-          |> Option.getWithDefault(DS.fromOCamlList(none))
-          |> DS.toOCamlList;
+          |> Option.getWithDefault(DS.fromCamlList(none))
+          |> DS.toCamlList;
         /* Examples */
         expect.list(removeLast([1, 2, 3])).toEqual([1, 2]);
         expect.list(removeLast([])).toEqual(none);
@@ -86,7 +86,7 @@ module Add = (DS: DS) : Output => {
 
       test("removeLastExn", ({expect}) => {
         let removeLastExn = list =>
-          list |> DS.fromOCamlList |> DS.removeLastExn |> DS.toOCamlList;
+          list |> DS.fromCamlList |> DS.removeLastExn |> DS.toCamlList;
         /* Examples */
         expect.list(removeLastExn([1, 2, 3])).toEqual([1, 2]);
         expect.fn(() => removeLastExn([])).toThrow();
@@ -96,10 +96,10 @@ module Add = (DS: DS) : Output => {
         let none = [(-1)];
         let removeLastN = (n, list) =>
           list
-          |> DS.fromOCamlList
+          |> DS.fromCamlList
           |> DS.removeLastN(n)
-          |> Option.getWithDefault(DS.fromOCamlList(none))
-          |> DS.toOCamlList;
+          |> Option.getWithDefault(DS.fromCamlList(none))
+          |> DS.toCamlList;
         /* Examples */
         expect.list(removeLastN(1, [1, 2, 3])).toEqual([1, 2]);
         expect.list(removeLastN(2, [1, 2, 3])).toEqual([1]);
@@ -110,7 +110,7 @@ module Add = (DS: DS) : Output => {
 
       test("removeLastNExn", ({expect}) => {
         let removeLastNExn = (n, list) =>
-          list |> DS.fromOCamlList |> DS.removeLastNExn(n) |> DS.toOCamlList;
+          list |> DS.fromCamlList |> DS.removeLastNExn(n) |> DS.toCamlList;
         /* Examples */
         expect.list(removeLastNExn(1, [1, 2, 3])).toEqual([1, 2]);
         expect.list(removeLastNExn(2, [1, 2, 3])).toEqual([1]);
@@ -123,10 +123,10 @@ module Add = (DS: DS) : Output => {
         let none = [(-1)];
         let updateLast = (fn, list) =>
           list
-          |> DS.fromOCamlList
+          |> DS.fromCamlList
           |> DS.updateLast(fn)
-          |> Option.getWithDefault(DS.fromOCamlList(none))
-          |> DS.toOCamlList;
+          |> Option.getWithDefault(DS.fromCamlList(none))
+          |> DS.toCamlList;
         /* Examples */
         expect.list(updateLast(x => x + 1, [1, 2, 3])).toEqual([1, 2, 4]);
         expect.list(updateLast(x => x + 1, [])).toEqual(none);
@@ -134,7 +134,7 @@ module Add = (DS: DS) : Output => {
 
       test("updateLastExn", ({expect}) => {
         let updateLastExn = (fn, list) =>
-          list |> DS.fromOCamlList |> DS.updateLastExn(fn) |> DS.toOCamlList;
+          list |> DS.fromCamlList |> DS.updateLastExn(fn) |> DS.toCamlList;
         /* Examples */
         expect.list(updateLastExn(x => x + 1, [1, 2, 3])).toEqual([
           1,
