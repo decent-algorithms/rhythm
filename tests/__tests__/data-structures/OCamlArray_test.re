@@ -1,7 +1,10 @@
 open TestFramework;
 open Rhythm;
 
-describe("OCamlArray", ({test}) => {
+describe("OCamlArray", ({describe, test}) => {
+  module FeatureBackTests = FeatureBackTests.Add(OCamlArray);
+  FeatureBackTests.register(describe);
+
   test("Syntax", ({expect}) => {
     let arr = [|0, 1, 2, 3, 4|];
     /* This is an error, because an Array syntax has not been opened. */

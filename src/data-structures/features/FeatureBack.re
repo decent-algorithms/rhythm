@@ -31,21 +31,151 @@ module Default = {
 module type Interface = {
   type tBack('el);
 
+  /**
+`getLast(ds)` returns an option containing the last element of the data
+structure `ds` if it exists, `None` otherwise.
+
+```
+getLast([1, 2, 3, 4])  // Some(4)
+getLast([])            // None
+```
+   */
   let getLast: tBack('el) => option('el);
+
+  /**
+`getLastExn(ds)` returns the last element of the data structure `ds` if it
+exists, raises an exception otherwise.
+
+```
+getLastExn([1, 2, 3, 4])  // 4
+getLastExn([])            // raises exception
+```
+   */
   let getLastExn: tBack('el) => 'el;
 
+  /**
+`getLastN(n, ds)` returns an option containing the last `n` elements of the
+data structure `ds` if they exist, `None` otherwise.
+
+```
+getLastN(2, [1, 2, 3, 4])  // Some([3, 4])
+getLastN(1, [1, 2, 3, 4])  // Some([4])
+getLastN(0, [])            // Some([])
+getLastN(1000, [1, 2])     // None
+getLastN(1, [])            // None
+```
+   */
   let getLastN: (int, tBack('el)) => option(tBack('el));
+
+  /**
+`getLastNExn(n, ds)` returns the last `n` elements of the data structure `ds`
+if they exist, raises an exception otherwise.
+
+```
+getLastNExn(2, [1, 2, 3, 4])  // [3, 4]
+getLastNExn(1, [1, 2, 3, 4])  // [4]
+getLastNExn(0, [])            // []
+getLastNExn(1000, [1, 2])     // raises exception
+getLastNExn(1, [])            // raises exception
+```
+   */
   let getLastNExn: (int, tBack('el)) => tBack('el);
 
+  /**
+`addLast(el, ds)` returns a new data structure with `el` added as the last
+element of the given data structure `ds`.
+
+```
+addLast(9, [1, 2, 3])  // [1, 2, 3, 9]
+addLast(9, [])         // [9]
+```
+   */
   let addLast: ('el, tBack('el)) => tBack('el);
 
+  /**
+`removeLast(ds)` returns an option containing a new data structure with the last
+element of the given data structure `ds` removed if it exists, None otherwise.
+
+__Note: Use `getLast` to access the last element if needed.__
+
+```
+removeLast([1, 2, 3])  // Some([1, 2])
+removeLast([])         // None
+```
+   */
   let removeLast: tBack('el) => option(tBack('el));
+
+  /**
+`removeLastExn(ds)` returns a new data structure with the last element of the
+given data structure `ds` removed if it exists, raises an exception otherwise.
+
+__Note: Use `getLast` to access the last element if needed.__
+
+```
+removeLastExn([1, 2, 3])  // [1, 2]
+removeLastExn([])         // raises exception
+```
+   */
   let removeLastExn: tBack('el) => tBack('el);
 
+  /**
+`removeLastN(n, ds)` returns an option containing a new data structure with the
+last `n` elements of the given data structure `ds` removed if they exist, None
+otherwise.
+
+__Note: Use `getLastN` to access the last elements if needed.__
+
+```
+removeLastN(1, [1, 2, 3])     // Some([1, 2])
+removeLastN(2, [1, 2, 3])     // Some([1])
+removeLastN(0, [])            // Some([])
+removeLastN(1000, [1, 2, 3])  // None
+removeLastN(1, [])            // None
+
+```
+   */
   let removeLastN: (int, tBack('el)) => option(tBack('el));
+
+  /**
+`removeLastNExn(n, ds)` returns a new data structure with the last `n` elements of
+the given data structure `ds` removed if they exist, raises an exception
+otherwise.
+
+__Note: Use `getLastN` to access the last elements if needed.__
+
+```
+removeLastNExn(1, [1, 2, 3])     // [1, 2]
+removeLastNExn(2, [1, 2, 3])     // [1]
+removeLastNExn(0, [])            // []
+removeLastNExn(1000, [1, 2, 3])  // raises exception
+removeLastNExn(1, [])            // raises exception
+
+```
+   */
   let removeLastNExn: (int, tBack('el)) => tBack('el);
 
+  /**
+`updateLast(fn, ds)` returns an option containing a new data structure with the
+last element of the given data structure `ds` updated by `fn` if it exists,
+None otherwise.
+
+```
+updateLast(x => x + 1, [1, 2, 3])  // Some([1, 2, 4])
+updateLast(x => x + 1, [])         // None
+```
+   */
   let updateLast: ('el => 'el, tBack('el)) => option(tBack('el));
+
+  /**
+`updateLastExn(fn, ds)` returns a new data structure with the last element of
+the given data structure `ds` updated by `fn` if it exists, raises an exception
+otherwise.
+
+```
+updateLastExn(x => x + 1, [1, 2, 3])  // [1, 2, 4]
+updateLastExn(x => x + 1, [])         // raises exception
+```
+   */
   let updateLastExn: ('el => 'el, tBack('el)) => tBack('el);
 };
 
@@ -58,8 +188,7 @@ module Add =
     switch (Config.fastGetLast) {
     | GetLastExn(getLastExn) => getLastExn
     | _ => (
-        ds =>
-          ds |> Config.toList |> Caml.List.rev |> OCamlListCore.getFirstExn
+        ds => ds |> Config.toList |> Caml.List.rev |> OCamlListCore.getFirstExn
       )
     };
 

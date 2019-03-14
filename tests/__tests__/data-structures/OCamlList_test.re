@@ -1,7 +1,10 @@
 open TestFramework;
 open Rhythm;
 
-describe("OCamlList", ({test}) => {
+describe("OCamlList", ({describe, test}) => {
+  module FeatureBackTests = FeatureBackTests.Add(OCamlList);
+  FeatureBackTests.register(describe);
+
   test("make", ({expect}) => {
     let list = OCamlList.make();
     expect.int(OCamlList.length(list)).toBe(0);
