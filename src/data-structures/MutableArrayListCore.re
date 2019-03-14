@@ -25,7 +25,7 @@ let rawi = (i, ds) => {
 let ensureCapacity = ds =>
   if (ds.length >= ds.capacity) {
     let arr =
-      Caml.Array.init(ds.capacity * 2, i =>
+      Caml.Array.init(ds.capacity * 2 + 1, i =>
         if (i < ds.length) {
           ds.data[rawi(i, ds)];
         } else {
@@ -94,13 +94,22 @@ let setIndexExn = (index, el, ds) => {
 
 let addFirst = (el, ds) => {
   ensureCapacity(ds);
-  let i = rawi(ds.first - 1, ds);
-  ds.data[i] = Some(el);
   ds.first = ds.first - 1;
   if (ds.first < 0) {
     ds.first = ds.first + ds.capacity;
   };
+  let i = rawi(0, ds);
+  ds.data[i] = Some(el);
   ds.length = ds.length + 1;
+  ds;
+};
+
+let addFirst2 = (el, ds) => {
+  let ds2 = fromList([el, ...toList(ds)]);
+  ds.first = ds2.first;
+  ds.length = ds2.length;
+  ds.capacity = ds2.capacity;
+  ds.data = ds2.data;
   ds;
 };
 

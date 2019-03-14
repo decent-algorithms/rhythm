@@ -2,6 +2,9 @@ open TestFramework;
 open Rhythm;
 
 describe("CamlArray", ({describe, test}) => {
+  module FeatureFrontTests = FeatureFrontTests.Add(CamlArray);
+  FeatureFrontTests.register(describe);
+
   module FeatureBackTests = FeatureBackTests.Add(CamlArray);
   FeatureBackTests.register(describe);
 

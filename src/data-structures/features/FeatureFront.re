@@ -31,21 +31,152 @@ module Default = {
 module type Interface = {
   type tFront('el);
 
+  /**
+`getFirst(ds)` returns an option containing the first element of the data
+structure `ds` if it exists, `None` otherwise.
+
+```
+getFirst([1, 2, 3, 4])  // Some(1)
+getFirst([])            // None
+```
+   */
   let getFirst: tFront('el) => option('el);
+
+  /**
+`getFirstExn(ds)` returns the first element of the data structure `ds` if it
+exists, raises an exception otherwise.
+
+```
+getFirstExn([1, 2, 3, 4])  // 1
+getFirstExn([])            // raises exception
+```
+   */
   let getFirstExn: tFront('el) => 'el;
 
+  /**
+`getFirstN(n, ds)` returns an option containing the first `n` elements of the
+data structure `ds` if they exist, `None` otherwise.
+
+```
+getFirstN(2, [1, 2, 3, 4])  // Some([1, 2])
+getFirstN(1, [1, 2, 3, 4])  // Some([1])
+getFirstN(0, [])            // Some([])
+getFirstN(1000, [1, 2])     // None
+getFirstN(1, [])            // None
+```
+   */
   let getFirstN: (int, tFront('el)) => option(tFront('el));
+
+  /**
+`getFirstNExn(n, ds)` returns the first `n` elements of the data structure `ds`
+if they exist, raises an exception otherwise.
+
+```
+getFirstNExn(2, [1, 2, 3, 4])  // [1, 2]
+getFirstNExn(1, [1, 2, 3, 4])  // [1]
+getFirstNExn(0, [])            // []
+getFirstNExn(1000, [1, 2])     // raises exception
+getFirstNExn(1, [])            // raises exception
+```
+   */
   let getFirstNExn: (int, tFront('el)) => tFront('el);
 
+  /**
+`addFirst(el, ds)` returns a new data structure with `el` added as the first
+element of the given data structure `ds`.
+
+```
+addFirst(9, [1, 2, 3])  // [9, 1, 2, 3]
+addFirst(9, [])         // [9]
+```
+   */
   let addFirst: ('el, tFront('el)) => tFront('el);
 
+  /**
+`removeFirst(ds)` returns an option containing a new data structure with the
+first element of the given data structure `ds` removed if it exists, None
+otherwise.
+
+__Note: Use `getFirst` to access the first element if needed.__
+
+```
+removeFirst([1, 2, 3])  // Some([2, 3])
+removeFirst([])         // None
+```
+   */
   let removeFirst: tFront('el) => option(tFront('el));
+
+  /**
+`removeFirstExn(ds)` returns a new data structure with the first element of the
+given data structure `ds` removed if it exists, raises an exception otherwise.
+
+__Note: Use `getFirst` to access the first element if needed.__
+
+```
+removeFirstExn([1, 2, 3])  // [2, 3]
+removeFirstExn([])         // raises exception
+```
+   */
   let removeFirstExn: tFront('el) => tFront('el);
 
+  /**
+`removeFirstN(n, ds)` returns an option containing a new data structure with the
+first `n` elements of the given data structure `ds` removed if they exist, None
+otherwise.
+
+__Note: Use `getFirstN` to access the first elements if needed.__
+
+```
+removeFirstN(1, [1, 2, 3])     // Some([2, 3])
+removeFirstN(2, [1, 2, 3])     // Some([3])
+removeFirstN(0, [])            // Some([])
+removeFirstN(1000, [1, 2, 3])  // None
+removeFirstN(1, [])            // None
+
+```
+   */
   let removeFirstN: (int, tFront('el)) => option(tFront('el));
+
+  /**
+`removeFirstNExn(n, ds)` returns a new data structure with the first `n`
+elements of the given data structure `ds` removed if they exist, raises an
+exception otherwise.
+
+__Note: Use `getFirstN` to access the first elements if needed.__
+
+```
+removeFirstNExn(1, [1, 2, 3])     // [2, 3]
+removeFirstNExn(2, [1, 2, 3])     // [3]
+removeFirstNExn(0, [])            // []
+removeFirstNExn(1000, [1, 2, 3])  // raises exception
+removeFirstNExn(1, [])            // raises exception
+
+```
+   */
   let removeFirstNExn: (int, tFront('el)) => tFront('el);
 
+  /**
+`updateFirst(fn, ds)` returns an option containing a new data structure with the
+first element of the given data structure `ds` updated by `fn` if it exists,
+None otherwise.
+
+```
+updateFirst(x => x + 1, [1, 2, 3])  // Some([2, 2, 3])
+updateFirst(x => x + 1, [])         // None
+```
+   */
   let updateFirst: ('el => 'el, tFront('el)) => option(tFront('el));
+
+  /**
+`updateFirstExn(fn, ds)` returns a new data structure with the first element of
+the given data structure `ds` updated by `fn` if it exists, raises an exception
+otherwise.
+
+```
+updateFirstExn(x => x + 1, [1, 2, 3])  // [2, 2, 3]
+updateFirstExn(x => x + 1, [])         // raises exception
+```
+   */
   let updateFirstExn: ('el => 'el, tFront('el)) => tFront('el);
 
   let match1Exn: tFront('el) => ('el, tFront('el));
