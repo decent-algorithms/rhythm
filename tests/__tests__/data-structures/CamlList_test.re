@@ -8,6 +8,9 @@ describe("CamlList", ({describe, test}) => {
   module FeatureBackTests = FeatureBackTests.Add(CamlList);
   FeatureBackTests.register(describe);
 
+  module FeatureIndexedTests = FeatureIndexedTests.Add(CamlList);
+  FeatureIndexedTests.register(describe);
+
   test("make", ({expect}) => {
     let list = CamlList.make();
     expect.int(CamlList.length(list)).toBe(0);

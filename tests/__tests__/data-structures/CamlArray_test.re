@@ -8,6 +8,9 @@ describe("CamlArray", ({describe, test}) => {
   module FeatureBackTests = FeatureBackTests.Add(CamlArray);
   FeatureBackTests.register(describe);
 
+  module FeatureIndexedTests = FeatureIndexedTests.Add(CamlArray);
+  FeatureIndexedTests.register(describe);
+
   test("Syntax", ({expect}) => {
     let arr = [|0, 1, 2, 3, 4|];
     /* This is an error, because an Array syntax has not been opened. */
