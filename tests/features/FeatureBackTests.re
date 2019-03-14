@@ -13,6 +13,25 @@ module Add = (DS: DS) : Output => {
   open Rely.Describe;
   let register = describe =>
     describe("FeatureBack", ({test}) => {
+      test("Basic usage", ({expect}) => {
+        let ds = DS.fromCamlList([]);
+        expect.fn(() => DS.getLastExn(ds)).toThrow();
+        let ds = DS.addLast(1, ds);
+        expect.int(DS.getLastExn(ds)).toBe(1);
+        let ds = DS.addLast(2, ds);
+        expect.int(DS.getLastExn(ds)).toBe(2);
+        let ds = DS.addLast(3, ds);
+        expect.int(DS.getLastExn(ds)).toBe(3);
+        let ds = DS.addLast(4, ds);
+        expect.int(DS.getLastExn(ds)).toBe(4);
+        let ds = DS.removeLastExn(ds);
+        expect.int(DS.getLastExn(ds)).toBe(3);
+        let ds = DS.removeLastExn(ds);
+        expect.int(DS.getLastExn(ds)).toBe(2);
+        let ds = DS.removeLastExn(ds);
+        expect.int(DS.getLastExn(ds)).toBe(1);
+      });
+
       test("getLast", ({expect}) => {
         let none = (-1);
         let getLast = list =>
