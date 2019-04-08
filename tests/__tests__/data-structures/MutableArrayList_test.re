@@ -10,4 +10,7 @@ describe("MutableArrayList", ({describe, test, testSkip}) => {
 
   module FeatureIndexedTests = FeatureIndexedTests.Add(MutableArrayList);
   FeatureIndexedTests.register(describe);
+
+  module FeatureMutableIndexedTests = FeatureMutableIndexedTests.Add(MutableArrayList);
+  FeatureMutableIndexedTests.register(describe);
 });

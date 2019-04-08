@@ -11,6 +11,9 @@ describe("CamlArray", ({describe, test}) => {
   module FeatureIndexedTests = FeatureIndexedTests.Add(CamlArray);
   FeatureIndexedTests.register(describe);
 
+  module FeatureMutableIndexedTests = FeatureMutableIndexedTests.Add(CamlArray);
+  FeatureMutableIndexedTests.register(describe);
+
   test("Syntax", ({expect}) => {
     let arr = [|0, 1, 2, 3, 4|];
     /* This is an error, because an Array syntax has not been opened. */
