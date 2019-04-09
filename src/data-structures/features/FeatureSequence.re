@@ -54,7 +54,7 @@ module type Interface = {
 
   let flatten: tSequence(tSequence('el)) => tSequence('el);
   let concat: (tSequence('el), tSequence('el)) => tSequence('el);
-  let concatList: array(tSequence('el)) => tSequence('el);
+  let concatArray: array(tSequence('el)) => tSequence('el);
   let concatList: list(tSequence('el)) => tSequence('el);
 };
 
