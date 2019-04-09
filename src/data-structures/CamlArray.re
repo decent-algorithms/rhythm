@@ -12,11 +12,12 @@ include FeatureSequence.Add({
   include CamlArrayCore;
 });
 
-include FeatureFront.Add({
-  open FeatureFront;
+include FeatureFrontImmutable.Add({
+  open FeatureFrontCommon;
+  open FeatureFrontImmutable;
   include Default;
   include CamlArrayCore;
-  let fastGetFirst = GetFirstExn(arr => SyntaxExn.(arr[0]));
+  let fastGetFirst = GetFirstExn((arr) => SyntaxExn.(arr[0]));
 });
 
 include FeatureBack.Add({

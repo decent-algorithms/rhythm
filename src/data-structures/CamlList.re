@@ -11,13 +11,15 @@ include FeatureSequence.Add({
   include CamlListCore;
 });
 
-include FeatureFront.Add({
-  open FeatureFront;
+include FeatureFrontImmutable.Add({
+  open FeatureFrontCommon;
+  open FeatureFrontImmutable;
   include Default;
   include CamlListCore;
   let fastGetFirst = GetFirstExn(CamlListCore.getFirstExn);
+  let fastDropFirst = DropFirstExn(CamlListCore.dropFirstExn);
   let fastAddFirst = AddFirst(CamlListCore.addFirst);
-  let fastRemoveFirst = RemoveFirstExn(CamlListCore.removeFirstExn);
+  let fastRemoveFirst = RemoveFirstExn(CamlListCore.dropFirstExn);
 });
 
 include FeatureBack.Add({

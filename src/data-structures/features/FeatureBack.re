@@ -217,7 +217,7 @@ module Add =
           let result = ref([]);
           for (i in 0 to count - 1) {
             result := [CamlListCore.getFirstExn(list^), ...result^];
-            list := CamlListCore.removeFirstExn(list^);
+            list := CamlListCore.dropFirstExn(list^);
           };
           result^ |> Config.fromList;
         }
@@ -275,7 +275,7 @@ module Add =
           let list = Caml.List.rev(list);
           let list = ref(list);
           for (i in 0 to count - 1) {
-            list := CamlListCore.removeFirstExn(list^);
+            list := CamlListCore.dropFirstExn(list^);
           };
           list^ |> Caml.List.rev |> Config.fromList;
         }

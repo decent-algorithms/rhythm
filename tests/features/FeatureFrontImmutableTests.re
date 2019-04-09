@@ -4,15 +4,19 @@ module type DS = {
   type t('el);
   let toCamlList: t('el) => list('el);
   let fromCamlList: list('el) => t('el);
-  include FeatureFront.Interface with type tFront('el) = t('el);
+  include
+    FeatureFrontImmutable.Interface with type tFrontImmutable('el) = t('el);
 };
 
 module type Output = {let register: Rely.Describe.describeFn(_) => unit;};
 
 module Add = (DS: DS) : Output => {
   open Rely.Describe;
-  let register = describe =>
-    describe("FeatureFront", ({test}) => {
+  let register = describe => {
+    module FeatureFrontCommonTests = FeatureFrontCommonTests.Add(DS);
+    FeatureFrontCommonTests.register(describe);
+
+    describe("FeatureFrontImmutable", ({test}) => {
       test("Basic usage", ({expect}) => {
         let ds = DS.fromCamlList([]);
         expect.fn(() => DS.getFirstExn(ds)).toThrow();
@@ -30,56 +34,6 @@ module Add = (DS: DS) : Output => {
         expect.int(DS.getFirstExn(ds)).toBe(2);
         let ds = DS.removeFirstExn(ds);
         expect.int(DS.getFirstExn(ds)).toBe(1);
-      });
-
-      test("getFirst", ({expect}) => {
-        let none = (-1);
-        let getFirst = list =>
-          list
-          |> DS.fromCamlList
-          |> DS.getFirst
-          |> Option.getWithDefault(none);
-        /* Examples */
-        expect.int(getFirst([1, 2, 3, 4])).toBe(1);
-        expect.int(getFirst([])).toBe(none);
-        /* Additional tests */
-        expect.int(getFirst([1])).toBe(1);
-      });
-
-      test("getFirstExn", ({expect}) => {
-        let getFirstExn = list => list |> DS.fromCamlList |> DS.getFirstExn;
-        /* Examples */
-        expect.int(getFirstExn([1, 2, 3, 4])).toBe(1);
-        expect.fn(() => getFirstExn([])).toThrow();
-        /* Additional tests */
-        expect.int(getFirstExn([1])).toBe(1);
-      });
-
-      test("getFirstN", ({expect}) => {
-        let none = [(-1)];
-        let getFirstN = (n, list) =>
-          list
-          |> DS.fromCamlList
-          |> DS.getFirstN(n)
-          |> Option.getWithDefault(DS.fromCamlList(none))
-          |> DS.toCamlList;
-        /* Examples */
-        expect.list(getFirstN(2, [1, 2, 3, 4])).toEqual([1, 2]);
-        expect.list(getFirstN(1, [1, 2, 3, 4])).toEqual([1]);
-        expect.list(getFirstN(0, [])).toEqual([]);
-        expect.list(getFirstN(1000, [1, 2])).toEqual(none);
-        expect.list(getFirstN(1, [])).toEqual(none);
-      });
-
-      test("getFirstNExn", ({expect}) => {
-        let getFirstNExn = (n, list) =>
-          list |> DS.fromCamlList |> DS.getFirstNExn(n) |> DS.toCamlList;
-        /* Examples */
-        expect.list(getFirstNExn(2, [1, 2, 3, 4])).toEqual([1, 2]);
-        expect.list(getFirstNExn(1, [1, 2, 3, 4])).toEqual([1]);
-        expect.list(getFirstNExn(0, [])).toEqual([]);
-        expect.fn(() => getFirstNExn(1000, [1, 2])).toThrow();
-        expect.fn(() => getFirstNExn(1, [])).toThrow();
       });
 
       test("addFirst", ({expect}) => {
@@ -163,4 +117,5 @@ module Add = (DS: DS) : Output => {
         expect.fn(() => updateFirstExn(x => x + 1, [])).toThrow();
       });
     });
+  };
 };

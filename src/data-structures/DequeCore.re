@@ -76,13 +76,13 @@ let getFirstExn = (deque: t('a)): 'a =>
   | {front: [x1, ...rest]} => x1
   };
 
-let removeFirstExn = (deque: t('a)): t('a) =>
+let dropFirstExn = (deque: t('a)): t('a) =>
   switch (deque) {
   | {front: [], rear: []} =>
-    raise(Exceptions.Empty("DequeCore.removeFirstExn"))
+    raise(Exceptions.Empty("DequeCore.dropFirstExn"))
   /* Logically impossible for front to be empty and rear to have size 2. */
   | {front: [], rear: [y1, y2, ...rest]} =>
-    raise(Exceptions.InternalError("DequeCore.removeFirstExn"))
+    raise(Exceptions.InternalError("DequeCore.dropFirstExn"))
   | {front: [], rear: [y1]} => empty
   | {front: [x1, ...rest], frontLen} =>
     maintain({...deque, front: rest, frontLen: frontLen - 1})

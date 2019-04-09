@@ -2,8 +2,8 @@ open TestFramework;
 open Rhythm;
 
 describe("CamlList", ({describe, test}) => {
-  module FeatureFrontTests = FeatureFrontTests.Add(CamlList);
-  FeatureFrontTests.register(describe);
+  module FeatureFrontImmutableTests = FeatureFrontImmutableTests.Add(CamlList);
+  FeatureFrontImmutableTests.register(describe);
 
   module FeatureBackTests = FeatureBackTests.Add(CamlList);
   FeatureBackTests.register(describe);

@@ -1,7 +1,13 @@
 # todo list
 
-- Add tests for each feature of core data structures
-- Add docs to each feature
 - Convert the "main" manual functions to features as well for consistent docs
 - Add Performance tests
-- Fix documentation that says "returns _new_ ds" for features used in mutables
+- Convert all features to common/immutable/mutable
+- DS.update needs to move to MutableIndexed feature. CamlArray is not dynamic
+  sized so needs to use FrontImmutable, but the update function mutates array
+  so needs to have update be mutable. So update has to move out of
+  FrontImmutable (or some other solution be devised)
+- Add zip, unzip, map, map2, map3 to sequence
+- Add Option.map2, map3, etc
+- Add Result module, similar to Option
+- Remove and discourage Options/Result infix functions (hard for new people)

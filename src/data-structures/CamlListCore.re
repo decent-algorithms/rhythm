@@ -14,8 +14,8 @@ let getFirstExn = list =>
   | [hd, ..._] => hd
   };
 let addFirst = (el, list) => [el, ...list];
-let removeFirstExn = list =>
+let dropFirstExn = list =>
   switch (list) {
-  | [] => raise(Exceptions.Empty("OCamlListCore.removeFirstExn"))
+  | [] => raise(Exceptions.Empty("OCamlListCore.dropFirstExn"))
   | [_el, ...rest] => rest
   };

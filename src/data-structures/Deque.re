@@ -7,13 +7,15 @@ include FeatureSequence.Add({
   let fastReverse = Reverse(DequeCore.reverse);
 });
 
-include FeatureFront.Add({
-  open FeatureFront;
+include FeatureFrontImmutable.Add({
+  open FeatureFrontCommon;
+  open FeatureFrontImmutable;
   include Default;
   include DequeCore;
   let fastGetFirst = GetFirstExn(DequeCore.getFirstExn);
+  let fastDropFirst = DropFirstExn(DequeCore.dropFirstExn);
   let fastAddFirst = AddFirst(DequeCore.addFirst);
-  let fastRemoveFirst = RemoveFirstExn(DequeCore.removeFirstExn);
+  let fastRemoveFirst = RemoveFirstExn(DequeCore.dropFirstExn);
 });
 
 include FeatureBack.Add({

@@ -2,13 +2,9 @@ type fastGetFirst('ds, 'el) =
   | SlowGetFirst
   | GetFirstExn('ds => 'el);
 
-type fastAddFirst('ds, 'el) =
-  | SlowAddFirst
-  | AddFirst(('el, 'ds) => 'ds);
-
-type fastRemoveFirst('ds, 'el) =
-  | SlowRemoveFirst
-  | RemoveFirstExn('ds => 'ds);
+type fastDropFirst('ds, 'el) =
+  | SlowDropFirst
+  | DropFirstExn('ds => 'ds);
 
 module type Config = {
   type t('el);
@@ -18,18 +14,16 @@ module type Config = {
 
   let isEmpty: t('el) => bool;
   let fastGetFirst: fastGetFirst(t('el), 'el);
-  let fastAddFirst: fastAddFirst(t('el), 'el);
-  let fastRemoveFirst: fastRemoveFirst(t('el), 'el);
+  let fastDropFirst: fastDropFirst(t('el), t('el));
 };
 
 module Default = {
   let fastGetFirst = SlowGetFirst;
-  let fastAddFirst = SlowAddFirst;
-  let fastRemoveFirst = SlowRemoveFirst;
+  let fastDropFirst = SlowDropFirst;
 };
 
 module type Interface = {
-  type tFront('el);
+  type tFrontCommon('el);
 
   /**
 `getFirst(ds)` returns an option containing the first element of the data
@@ -40,7 +34,7 @@ getFirst([1, 2, 3, 4])  // Some(1)
 getFirst([])            // None
 ```
    */
-  let getFirst: tFront('el) => option('el);
+  let getFirst: tFrontCommon('el) => option('el);
 
   /**
 `getFirstExn(ds)` returns the first element of the data structure `ds` if it
@@ -51,7 +45,7 @@ getFirstExn([1, 2, 3, 4])  // 1
 getFirstExn([])            // raises exception
 ```
    */
-  let getFirstExn: tFront('el) => 'el;
+  let getFirstExn: tFrontCommon('el) => 'el;
 
   /**
 `getFirstN(n, ds)` returns an option containing the first `n` elements of the
@@ -65,7 +59,7 @@ getFirstN(1000, [1, 2])     // None
 getFirstN(1, [])            // None
 ```
    */
-  let getFirstN: (int, tFront('el)) => option(tFront('el));
+  let getFirstN: (int, tFrontCommon('el)) => option(tFrontCommon('el));
 
   /**
 `getFirstNExn(n, ds)` returns the first `n` elements of the data structure `ds`
@@ -79,131 +73,109 @@ getFirstNExn(1000, [1, 2])     // raises exception
 getFirstNExn(1, [])            // raises exception
 ```
    */
-  let getFirstNExn: (int, tFront('el)) => tFront('el);
+  let getFirstNExn: (int, tFrontCommon('el)) => tFrontCommon('el);
 
   /**
-`addFirst(el, ds)` returns a new data structure with `el` added as the first
-element of the given data structure `ds`.
-
-```
-addFirst(9, [1, 2, 3])  // [9, 1, 2, 3]
-addFirst(9, [])         // [9]
-```
-   */
-  let addFirst: ('el, tFront('el)) => tFront('el);
-
-  /**
-`removeFirst(ds)` returns an option containing a new data structure with the
+`dropFirst(ds)` returns an option containing a new data structure with the
 first element of the given data structure `ds` removed if it exists, None
 otherwise.
 
+__Note: This does NOT mutate the given data structure.__
 __Note: Use `getFirst` to access the first element if needed.__
 
 ```
-removeFirst([1, 2, 3])  // Some([2, 3])
-removeFirst([])         // None
+dropFirst([1, 2, 3])  // Some([2, 3])
+dropFirst([])         // None
 ```
    */
-  let removeFirst: tFront('el) => option(tFront('el));
+  let dropFirst: tFrontCommon('el) => option(tFrontCommon('el));
 
   /**
-`removeFirstExn(ds)` returns a new data structure with the first element of the
+`dropFirstExn(ds)` returns a new data structure with the first element of the
 given data structure `ds` removed if it exists, raises an exception otherwise.
 
+__Note: This does NOT mutate the given data structure.__
 __Note: Use `getFirst` to access the first element if needed.__
 
 ```
-removeFirstExn([1, 2, 3])  // [2, 3]
-removeFirstExn([])         // raises exception
+dropFirstExn([1, 2, 3])  // [2, 3]
+dropFirstExn([])         // raises exception
 ```
    */
-  let removeFirstExn: tFront('el) => tFront('el);
+  let dropFirstExn: tFrontCommon('el) => tFrontCommon('el);
 
   /**
-`removeFirstN(n, ds)` returns an option containing a new data structure with the
+`dropFirstN(n, ds)` returns an option containing a new data structure with the
 first `n` elements of the given data structure `ds` removed if they exist, None
 otherwise.
 
+__Note: This does NOT mutate the given data structure.__
 __Note: Use `getFirstN` to access the first elements if needed.__
 
 ```
-removeFirstN(1, [1, 2, 3])     // Some([2, 3])
-removeFirstN(2, [1, 2, 3])     // Some([3])
-removeFirstN(0, [])            // Some([])
-removeFirstN(1000, [1, 2, 3])  // None
-removeFirstN(1, [])            // None
+dropFirstN(1, [1, 2, 3])     // Some([2, 3])
+dropFirstN(2, [1, 2, 3])     // Some([3])
+dropFirstN(0, [])            // Some([])
+dropFirstN(1000, [1, 2, 3])  // None
+dropFirstN(1, [])            // None
 
 ```
    */
-  let removeFirstN: (int, tFront('el)) => option(tFront('el));
+  let dropFirstN: (int, tFrontCommon('el)) => option(tFrontCommon('el));
 
   /**
-`removeFirstNExn(n, ds)` returns a new data structure with the first `n`
+`dropFirstNExn(n, ds)` returns a new data structure with the first `n`
 elements of the given data structure `ds` removed if they exist, raises an
 exception otherwise.
 
+__Note: This does NOT mutate the given data structure.__
 __Note: Use `getFirstN` to access the first elements if needed.__
 
 ```
-removeFirstNExn(1, [1, 2, 3])     // [2, 3]
-removeFirstNExn(2, [1, 2, 3])     // [3]
-removeFirstNExn(0, [])            // []
-removeFirstNExn(1000, [1, 2, 3])  // raises exception
-removeFirstNExn(1, [])            // raises exception
+dropFirstNExn(1, [1, 2, 3])     // [2, 3]
+dropFirstNExn(2, [1, 2, 3])     // [3]
+dropFirstNExn(0, [])            // []
+dropFirstNExn(1000, [1, 2, 3])  // raises exception
+dropFirstNExn(1, [])            // raises exception
 
 ```
    */
-  let removeFirstNExn: (int, tFront('el)) => tFront('el);
+  let dropFirstNExn: (int, tFrontCommon('el)) => tFrontCommon('el);
 
-  /**
-`updateFirst(fn, ds)` returns an option containing a new data structure with the
-first element of the given data structure `ds` updated by `fn` if it exists,
-None otherwise.
-
-```
-updateFirst(x => x + 1, [1, 2, 3])  // Some([2, 2, 3])
-updateFirst(x => x + 1, [])         // None
-```
-   */
-  let updateFirst: ('el => 'el, tFront('el)) => option(tFront('el));
-
-  /**
-`updateFirstExn(fn, ds)` returns a new data structure with the first element of
-the given data structure `ds` updated by `fn` if it exists, raises an exception
-otherwise.
-
-```
-updateFirstExn(x => x + 1, [1, 2, 3])  // [2, 2, 3]
-updateFirstExn(x => x + 1, [])         // raises exception
-```
-   */
-  let updateFirstExn: ('el => 'el, tFront('el)) => tFront('el);
-
-  let match1Exn: tFront('el) => ('el, tFront('el));
-  let match2Exn: tFront('el) => ('el, 'el, tFront('el));
-  let match3Exn: tFront('el) => ('el, 'el, 'el, tFront('el));
-  let match4Exn: tFront('el) => ('el, 'el, 'el, 'el, tFront('el));
-  let match5Exn: tFront('el) => ('el, 'el, 'el, 'el, 'el, tFront('el));
-  let match6Exn: tFront('el) => ('el, 'el, 'el, 'el, 'el, 'el, tFront('el));
+  let match1Exn: tFrontCommon('el) => ('el, tFrontCommon('el));
+  let match2Exn: tFrontCommon('el) => ('el, 'el, tFrontCommon('el));
+  let match3Exn: tFrontCommon('el) => ('el, 'el, 'el, tFrontCommon('el));
+  let match4Exn:
+    tFrontCommon('el) => ('el, 'el, 'el, 'el, tFrontCommon('el));
+  let match5Exn:
+    tFrontCommon('el) => ('el, 'el, 'el, 'el, 'el, tFrontCommon('el));
+  let match6Exn:
+    tFrontCommon('el) => ('el, 'el, 'el, 'el, 'el, 'el, tFrontCommon('el));
   let match7Exn:
-    tFront('el) => ('el, 'el, 'el, 'el, 'el, 'el, 'el, tFront('el));
+    tFrontCommon('el) =>
+    ('el, 'el, 'el, 'el, 'el, 'el, 'el, tFrontCommon('el));
 
-  let match1: tFront('el) => option(('el, tFront('el)));
-  let match2: tFront('el) => option(('el, 'el, tFront('el)));
-  let match3: tFront('el) => option(('el, 'el, 'el, tFront('el)));
-  let match4: tFront('el) => option(('el, 'el, 'el, 'el, tFront('el)));
+  let match1: tFrontCommon('el) => option(('el, tFrontCommon('el)));
+  let match2: tFrontCommon('el) => option(('el, 'el, tFrontCommon('el)));
+  let match3:
+    tFrontCommon('el) => option(('el, 'el, 'el, tFrontCommon('el)));
+  let match4:
+    tFrontCommon('el) => option(('el, 'el, 'el, 'el, tFrontCommon('el)));
   let match5:
-    tFront('el) => option(('el, 'el, 'el, 'el, 'el, tFront('el)));
+    tFrontCommon('el) =>
+    option(('el, 'el, 'el, 'el, 'el, tFrontCommon('el)));
   let match6:
-    tFront('el) => option(('el, 'el, 'el, 'el, 'el, 'el, tFront('el)));
+    tFrontCommon('el) =>
+    option(('el, 'el, 'el, 'el, 'el, 'el, tFrontCommon('el)));
   let match7:
-    tFront('el) => option(('el, 'el, 'el, 'el, 'el, 'el, 'el, tFront('el)));
+    tFrontCommon('el) =>
+    option(('el, 'el, 'el, 'el, 'el, 'el, 'el, tFrontCommon('el)));
 };
 
 module Add =
        (Config: Config)
-       : (Interface with type tFront('el) = Config.t('el)) => {
-  type tFront('el) = Config.t('el);
+       : (Interface with type tFrontCommon('el) = Config.t('el)) => {
+  type tFrontCommon('el) = Config.t('el);
 
   let getFirstExn =
     switch (Config.fastGetFirst) {
@@ -222,14 +194,14 @@ module Add =
     };
 
   let getFirstNExn =
-    switch (Config.fastGetFirst, Config.fastRemoveFirst) {
-    | (GetFirstExn(getFirstExn), RemoveFirstExn(removeFirstExn)) => (
+    switch (Config.fastGetFirst, Config.fastDropFirst) {
+    | (GetFirstExn(getFirstExn), DropFirstExn(dropFirstExn)) => (
         (count, ds) => {
           let ds = ref(ds);
           let result = ref([]);
           for (_i in 0 to count - 1) {
             result := [getFirstExn(ds^), ...result^];
-            ds := removeFirstExn(ds^);
+            ds := dropFirstExn(ds^);
           };
           result^ |> Caml.List.rev |> Config.fromList;
         }
@@ -253,39 +225,27 @@ module Add =
     | _ => None
     };
 
-  let addFirst =
-    switch (Config.fastAddFirst) {
-    | AddFirst(addFirst) => addFirst
-    | _ => (
-        (el, ds) => {
-          let list = Config.toList(ds);
-          let list = [el, ...list];
-          Config.fromList(list);
-        }
-      )
-    };
-
-  let removeFirstExn =
-    switch (Config.fastRemoveFirst) {
-    | RemoveFirstExn(removeFirstExn) => removeFirstExn
+  let dropFirstExn =
+    switch (Config.fastDropFirst) {
+    | DropFirstExn(dropFirstExn) => dropFirstExn
     | _ => (
         ds => {
           let list = Config.toList(ds);
           switch (list) {
-          | [] => raise(Exceptions.Empty("FeatureFront.removeFirstExn"))
+          | [] => raise(Exceptions.Empty("FeatureFront.dropFirstExn"))
           | [_, ...rest] => Config.fromList(rest)
           };
         }
       )
     };
 
-  let removeFirstNExn =
-    switch (Config.fastRemoveFirst) {
-    | RemoveFirstExn(removeFirstExn) => (
+  let dropFirstNExn =
+    switch (Config.fastDropFirst) {
+    | DropFirstExn(dropFirstExn) => (
         (count, ds) => {
           let ds = ref(ds);
           for (_i in 0 to count - 1) {
-            ds := removeFirstExn(ds^);
+            ds := dropFirstExn(ds^);
           };
           ds^;
         }
@@ -302,52 +262,19 @@ module Add =
       )
     };
 
-  let removeFirstN = (count, ds) =>
-    try (Some(removeFirstNExn(count, ds))) {
+  let dropFirstN = (count, ds) =>
+    try (Some(dropFirstNExn(count, ds))) {
     | _ => None
     };
 
-  let removeFirst = ds =>
-    try (Some(removeFirstExn(ds))) {
-    | _ => None
-    };
-
-  let updateFirstExn =
-    switch (Config.fastGetFirst, Config.fastAddFirst, Config.fastRemoveFirst) {
-    | (
-        GetFirstExn(getFirstExn),
-        AddFirst(addFirst),
-        RemoveFirstExn(removeFirstExn),
-      ) => (
-        (fn, ds) =>
-          if (Config.isEmpty(ds)) {
-            raise(Exceptions.Empty("FeatureFront.updateFirstExn"));
-          } else {
-            let first = getFirstExn(ds);
-            let rest = removeFirstExn(ds);
-            let newFirst = fn(first);
-            addFirst(newFirst, rest);
-          }
-      )
-    | _ => (
-        (fn, ds) => {
-          let list = Config.toList(ds);
-          switch (list) {
-          | [] => raise(Exceptions.Empty("FeatureFront.updateFirstExn"))
-          | [hd, ...rest] => Config.fromList([fn(hd), ...rest])
-          };
-        }
-      )
-    };
-
-  let updateFirst = (fn, ds) =>
-    try (Some(updateFirstExn(fn, ds))) {
+  let dropFirst = ds =>
+    try (Some(dropFirstExn(ds))) {
     | _ => None
     };
 
   let match1Exn = ds => {
     let front = ds |> getFirstNExn(1) |> Config.toList;
-    let rest = ds |> removeFirstNExn(1);
+    let rest = ds |> dropFirstNExn(1);
     switch (front) {
     | [el1] => (el1, rest)
     | _ => raise(Exceptions.InternalError("FeatureFront.matchNExn"))
@@ -356,7 +283,7 @@ module Add =
 
   let match2Exn = ds => {
     let front = ds |> getFirstNExn(2) |> Config.toList;
-    let rest = ds |> removeFirstNExn(2);
+    let rest = ds |> dropFirstNExn(2);
     switch (front) {
     | [el1, el2] => (el1, el2, rest)
     | _ => raise(Exceptions.InternalError("FeatureFront.matchNExn"))
@@ -365,7 +292,7 @@ module Add =
 
   let match3Exn = ds => {
     let front = ds |> getFirstNExn(3) |> Config.toList;
-    let rest = ds |> removeFirstNExn(3);
+    let rest = ds |> dropFirstNExn(3);
     switch (front) {
     | [el1, el2, el3] => (el1, el2, el3, rest)
     | _ => raise(Exceptions.InternalError("FeatureFront.matchNExn"))
@@ -374,7 +301,7 @@ module Add =
 
   let match4Exn = ds => {
     let front = ds |> getFirstNExn(4) |> Config.toList;
-    let rest = ds |> removeFirstNExn(4);
+    let rest = ds |> dropFirstNExn(4);
     switch (front) {
     | [el1, el2, el3, el4] => (el1, el2, el3, el4, rest)
     | _ => raise(Exceptions.InternalError("FeatureFront.matchNExn"))
@@ -383,7 +310,7 @@ module Add =
 
   let match5Exn = ds => {
     let front = ds |> getFirstNExn(5) |> Config.toList;
-    let rest = ds |> removeFirstNExn(5);
+    let rest = ds |> dropFirstNExn(5);
     switch (front) {
     | [el1, el2, el3, el4, el5] => (el1, el2, el3, el4, el5, rest)
     | _ => raise(Exceptions.InternalError("FeatureFront.matchNExn"))
@@ -392,7 +319,7 @@ module Add =
 
   let match6Exn = ds => {
     let front = ds |> getFirstNExn(6) |> Config.toList;
-    let rest = ds |> removeFirstNExn(6);
+    let rest = ds |> dropFirstNExn(6);
     switch (front) {
     | [el1, el2, el3, el4, el5, el6] => (el1, el2, el3, el4, el5, el6, rest)
     | _ => raise(Exceptions.InternalError("FeatureFront.matchNExn"))
@@ -401,7 +328,7 @@ module Add =
 
   let match7Exn = ds => {
     let front = ds |> getFirstNExn(7) |> Config.toList;
-    let rest = ds |> removeFirstNExn(7);
+    let rest = ds |> dropFirstNExn(7);
     switch (front) {
     | [el1, el2, el3, el4, el5, el6, el7] => (
         el1,
